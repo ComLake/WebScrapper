@@ -1,34 +1,54 @@
 package com.example.comlakecrawler.utils;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
+@Table(name = "clake_users")
 public class UserAccount {
-    private String username;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = true)
+    private String affiliation;
+    @Column(nullable = true)
+    private String department;
+    @Column(nullable = false, unique = true,length = 45)
     private String email;
-    private List<String> roles;
-    private String tokenExpiry;
-    private String accessToken;
-    private String tokenType;
+    @Column(nullable = false, unique = true, length = 20)
+    private String firstname;
+    @Column(nullable = true)
+    private String lastname;
+    @Column(nullable = false, length = 64)
     private String password;
+    @Column(nullable = false)
+    private String username;
 
-    public UserAccount() { }
-
-    public UserAccount(String username, String email, List<String> roles, String tokenExpiry, String accessToken, String tokenType, String password) {
-        this.username = username;
-        this.email = email;
-        this.roles = roles;
-        this.tokenExpiry = tokenExpiry;
-        this.accessToken = accessToken;
-        this.tokenType = tokenType;
+    public UserAccount() {
     }
 
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAffiliation() {
+        return affiliation;
+    }
+
+    public void setAffiliation(String affiliation) {
+        this.affiliation = affiliation;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getEmail() {
@@ -39,36 +59,20 @@ public class UserAccount {
         this.email = email;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getTokenExpiry() {
-        return tokenExpiry;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setTokenExpiry(String tokenExpiry) {
-        this.tokenExpiry = tokenExpiry;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getPassword() {
@@ -77,5 +81,13 @@ public class UserAccount {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

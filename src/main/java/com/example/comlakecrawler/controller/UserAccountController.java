@@ -15,15 +15,15 @@ public class UserAccountController {
     public UserAccountController() {
         userAccounts = new ArrayList<>();
         List<String>roles = new ArrayList<>();
-        roles.add("ROLE_USER");
-        userAccounts.add(new UserAccount("thiet",
-                "thietna22@gmail.com",
-                roles,
-                "",
-                "",
-                "",
-                "1234567"
-        ));
+//        roles.add("ROLE_USER");
+//        userAccounts.add(new UserAccount("thiet",
+//                "thietna22@gmail.com",
+//                roles,
+//                "",
+//                "",
+//                "",
+//                "1234567"
+//        ));
     }
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public List<UserAccount> getUserAccount() {

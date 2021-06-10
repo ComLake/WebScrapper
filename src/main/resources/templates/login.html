@@ -1,0 +1,234 @@
+<html>
+<head>
+  <title>"Ulake Crawler"</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
+  <script src="https://kit.fontawesome.com/42deadbeef.js" crossorigin="anonymous"></script>
+<!--  <script src="js/jquery-3.3.1.min.js"></script>-->
+  <style>
+    *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: sans-serif;
+    outline: none;
+    border: none;
+    }
+    html,body{
+        height: 100%;
+        width: 100%;
+        background-image: url(images/background.jpg);
+        background-position: center;
+        background-size: cover;
+        position: absolute;
+    }
+    .align{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-bottom: 8px;
+    }
+    .logo{
+    width: 120px;
+    }
+    .card{
+    height: 480px;
+    width: 396px;
+    background: #fff;
+    position: relative;
+    margin 6% auto;
+    padding: 5px;
+    border: 1px solid #1a237e;
+    border-radius: 12px;
+    overflow: hidden;
+    }
+    .head{
+    width: 220px;
+    margin: 35px auto;
+    position: relative;
+    box-shadow: 0 0 20px 9px #c5cae9;
+    border-radius: 30px;
+    }
+    .toggle-button{
+    padding: 10px 30px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+    }
+    #selected-button{
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 110px;
+    height: 100%;
+    background: linear-gradient(45deg, #ea80fc, #ff80ab);
+    border-radius: 30px;
+    transition: .5s;
+    }
+    form{
+    top: 120px;
+    position: absolute;
+    width: 280px;
+    transition: .5s;
+    }
+    #login_box{
+    left: 50px;
+    }
+    #register_box{
+    left: 450px;
+    }
+    .inputs{
+    width: 100%;
+    padding-top: 6px;
+    }
+    .input{
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    }
+    .input input[type="text"]{
+    width: 100%;
+    font-size: 17px;
+    background: #e8eaf6;
+    border-radius: 8px;
+    padding: 16px 18px 16px 51px;
+    color: #283593;
+    }
+    .input img{
+    width: 16px;
+    position: absolute;
+    left: 19px;
+    }
+    .checkbox{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    }
+    .checkbox input{
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    }
+    .checkbox span{
+    display: flex;
+    align-items: center;
+    color: rgb(110,110,110);
+    font-size: 16px;
+    user-select: none;
+    }
+    .checkbox span:before{
+    content: "";
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    margin-right: 16px;
+    background-color: #e8eaf6;
+    }
+    .checkbox:hover input ~ span:before{
+    background-color: rgb(50,50,50);
+    }
+    .checkbox input:checked ~ span:before{
+    background-image: url(images/check.png);
+    background-size: cover;
+    }
+    .box-button{
+        border:0;
+        background:#1a237e;
+        display:block;
+        margin: 15px auto;
+        text-align:center;
+        border: 2px solid #1a237e;
+        padding: 14px 52px;
+        outline: none;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+        border-radius: 12px;
+        transition: 0.25s;
+        cursor: pointer;
+    }
+    .box-button:hover{
+        background: #9fa8da;
+        border-color: #9fa8da;
+    }
+</style>
+</head>
+<body>
+<div class="align">
+  <img class="logo"src="images/logo_fish.png">
+  <div class="card">
+    <div class="head">
+      <div></div>
+      <div id="selected-button"></div>
+      <button class="toggle-button" id="login" href="#login" onclick="login()">Login</button>
+      <button class="toggle-button" id="register" href="#register" onclick="register()">Register</button>
+      <div></div>
+    </div>
+    <div class="tabs">
+      <form id="login_box" method="post">
+        <div class="inputs">
+          <div class="input">
+            <input type="text" name="" placeholder="Username">
+            <img src="images/user-account-box.png">
+          </div>
+          <div class="input">
+            <input type="text" name="" placeholder="Password">
+            <img src="images/padlock.png">
+          </div>
+          <label class="checkbox">
+            <input type="checkbox">
+            <span>Remember me</span>
+          </label>
+        </div>
+        <button class="box-button">Login</button>
+      </form>
+      <form id="register_box"method="post">
+        <div class="inputs">
+          <div class="input">
+            <input type="text" name="" placeholder="Email">
+            <img src="images/email.png">
+          </div>
+          <div class="input">
+            <input type="text" name="" placeholder="Username">
+            <img src="images/user-account-box.png">
+          </div>
+          <div class="input">
+            <input type="text" name="" placeholder="Password">
+            <img src="images/padlock.png">
+          </div>
+          <label class="checkbox">
+            <input type="checkbox">
+            <span>I agree to the term & condition</span>
+          </label>
+        </div>
+        <button class="box-button">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  var lg = document.getElementById("login_box");
+  var rg = document.getElementById("register_box");
+  var select = document.getElementById("selected-button");
+  function register(){
+    lg.style.left = "-400px";
+    rg.style.left = "50px";
+    select.style.left = "110px";
+  }
+  function login(){
+    lg.style.left = "50px";
+    rg.style.left = "450px";
+    select.style.left = "0  ";
+  }
+</script>
+</body>
+</html>
