@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AppController {
-    @GetMapping("")
+    @GetMapping(value = "")
     public String viewHomePage(){
         return "home";
     }
+
+    
 }
