@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:600|Work+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="profile1.css">
+    <style>
+      *{ margin: 0;
+      padding: 0;}
+
+      .container{height: 100vh;
+      width: 100%;
+      background-image: url(images/background.jpg);
+      background-position: center;
+      background-size: cover;
+      padding-left: 5%;
+      padding-right: 5%;
+      box-sizing: border-box;
+      position: relative;
+      }
+      .navbar{
+      width: 100%;
+      height: 15vh;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      }
+      .user{
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      padding-top: 40px;
+      }
+      nav{
+      flex: 1;
+      padding-left: 60px;
+      padding-top: 60px;
+      }
+      nav ul li{
+      display: inline-block;
+      list-style: none;
+      margin: 0px 20px;
+      }
+      nav ul li a{
+      text-decoration:none;
+      color: #1a237e;
+      }
+      .logo{
+      width: 160px;
+      height: 160px;
+      cursor: pointer;
+      margin-top: 5%;
+      }
+      .content h1{
+      font-size: 60px;
+      font-weight: 100;
+      margin-top: 24px;
+      margin-bottom: 15px;
+      color:#283593;
+      }
+      .content p{
+      font-size: 20px;
+      color:#303f9f;
+      }
+      .content{
+      margin-left: 10%;
+      margin-top: 10%
+      }
+      .content .btn
+      {
+      display: inline-block;
+      background: linear-gradient(45deg, #ea80fc, #ff80ab);
+      border-radius:6px;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      text-decoration: none;
+      color: #fff;
+      box-shadow: 3px 8px 22px rgba(94,28,68,0.15);
+      }
+      .arrow-icons{
+      margin-top: 40px;
+      display: flex;
+      }
+      .arrow-icons img{
+      width: 40px;
+      margin-right: 25px;
+      }
+      .feature-img{
+      height: 70%;
+      position: absolute;
+      bottom: 0;
+      right: 160px;
+      }
+      .social_links{
+      transform: rotate(-90deg);
+      position: absolute;
+      left: -80px;
+      bottom: 180px;
+      }
+      .social_links a{
+      text-decoration: none;
+      padding-right: 20px;
+      font-size: 14px;
+      color: #1a237e;
+      }
+      .bg-modal{
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      position: absolute;
+      top: 0;
+      display: flex;
+      display:none;
+      }
+      .modal-content{
+      background-color: white;
+      height: 415px;
+      width: 310px;
+      position: absolute;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 8px;
+      box-shadow: 0 0 20px 10px rgba(53, 59, 78, 0.7);
+      }
+      .info{
+      height: 100%;
+      width : 100%;
+      display: flex;
+      justify-content: center;
+      }
+      .name{
+      font-size: 35px;
+      font-family: "Raleway", sans-serif;
+      color: #283593;
+      position: absolute;
+      top: 100px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      }
+      .prof{
+      font-size: 25px;
+      position: absolute;
+      top: 140px;
+      font-family: "Work Sans", sans-serif;
+      color: #555555;
+      }
+      .divider{
+      background-color: #949594;
+      height: 1.5px;
+      width: 50px;
+      position: absolute;
+      top: 190px;
+      }
+      .bio{
+      position: absolute;
+      top: 220px;
+      color: #949594;
+      text-align: center;
+      font-size: 18px;
+      font-family: "Work Sans", sans-serif;
+      line-height: 28px;
+      }
+      .btn-logout{
+      position: absolute;
+      bottom: 30px;
+      background-color: #1b5e20;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      padding: 13px 23px;
+      left: 20px;
+      color: white;
+      font-family: "Work Sans", sans-serif;
+      }
+      .btn-logout:hover{
+        background: #c8e6c9;
+      }
+      .btn-cancel{
+      position: absolute;
+      bottom: 30px;
+      background-color: #b71c1c;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      padding: 13px 23px;
+      color: white;
+      right: 20px;
+      font-family: "Work Sans", sans-serif;
+      }
+      .btn-cancel:hover{
+        background: #ffcdd2;
+      }
+      .photo{
+      height: 100%;
+      width: 100%;
+      background-image: url(images/flower.jpg);
+      position: absolute;
+      bottom: 0;
+      background-size: 100% 100%;
+      border-radius: 8px;
+      transition: 1s;
+      }
+      .modal-content:hover .photo{
+      transform: scale(0.5,0.35) translateY(-650px);
+      background-size: 100% 150%;
+      background-position: 0 -25px;
+      border-radius: 50%;
+      }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <img src="images/logo_fish.png" class="logo">
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a> </li>
+                <li><a href="">Profile</a> </li>
+                <li><a href="search.html">Crawler Center</a> </li>
+                <li><a href="">About</a> </li>
+            </ul>
+        </nav>
+        <div class="logout">
+            <img id="logout" src="images/user.png" class="user">
+        </div>
+    </div>
+    <div class="content">
+        <a href="" class="btn">ComLake API</a>
+        <h1>Data Acquisition <br> & Integration Tool</h1>
+        <p>The place that you can download everything</p>
+        <div class="arrow-icons">
+            <img src="images/left_arrow.png">
+            <img src="images/next_arrow.png">
+        </div>
+    </div>
+    <img src="images/sample_girl.png" class="feature-img">
+    <div class="social_links">
+        <a href="">FACEBOOK</a>
+        <a href="">GMAIL</a>
+        <a href="">GITHUB</a>
+    </div>
+</div>
+<div class="bg-modal">
+    <div class="modal-content">
+        <div class="info">
+            <div class="name">Thiet Nguyen</div>
+            <div class="prof">Java Coder</div>
+            <div class="divider"></div>
+            <div class="bio">
+                Email: fillaytion23@gmail.com
+                User
+                Active : ON
+            </div>
+            <button class="btn-logout">Log out</button>
+            <button class="btn-cancel">Cancel</button>
+        </div>
+        <div class="photo"></div>
+    </div>
+</div>
+<script>
+    document.getElementById('logout').addEventListener('click',
+    function(){
+        document.querySelector('.bg-modal').style.display = 'flex';
+    });
+    document.querySelector('.btn-cancel').addEventListener('click',
+    function(){
+        document.querySelector('.bg-modal').style.display = 'none';
+    });
+</script>
+</body>
+</html>
