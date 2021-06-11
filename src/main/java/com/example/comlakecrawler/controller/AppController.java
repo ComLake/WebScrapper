@@ -9,6 +9,8 @@ public class AppController {
     public String viewHomePage(){
         return "homepage";
     }
-
-
+    @GetMapping(value = "/login")
+    public String showLoginForm(){ return "login";}
+    @GetMapping(value = "/search")
+    public String showCrawlerCenter(){ return "search";}
 }

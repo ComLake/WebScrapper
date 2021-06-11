@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
@@ -19,6 +19,7 @@
       }
       .container{
       width: 80%;
+      height: 100%;
       margin: auto;
       overflow: hidden;
       }
@@ -86,14 +87,15 @@
       float: left;
       }
       header #branding{
-      margin: 0;
+      margin-top: 5px;
+      margin-bottom: 10px;
       }
       header nav{
       float: right;
-      margin-top: 10px;
+      margin-top: 30px;
       }
       .logo{
-      width: 100px;
+      width: 120px;
       height: 100px;
       cursor: pointer;
       }
@@ -138,25 +140,148 @@
       background-color: #263238;
       text-align: center;
       }
+      .logout img{
+      position: absolute;
+      right: 40px;
+      top: 50px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      }
+      header .logout{
+      float: right;
+      }
+      header .logout{
+      margin: 0;
+      }
+      .bg-modal{
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      position: absolute;
+      top: 0;
+      display: flex;
+      display:none;
+      }
+      .modal-content{
+      background-color: white;
+      height: 415px;
+      width: 310px;
+      position: absolute;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 8px;
+      box-shadow: 0 0 20px 10px rgba(53, 59, 78, 0.7);
+      }
+      .info{
+      height: 100%;
+      width : 100%;
+      display: flex;
+      justify-content: center;
+      }
+      .name{
+      font-size: 35px;
+      font-family: "Raleway", sans-serif;
+      color: #283593;
+      position: absolute;
+      top: 100px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      }
+      .prof{
+      font-size: 25px;
+      position: absolute;
+      top: 140px;
+      font-family: "Work Sans", sans-serif;
+      color: #555555;
+      }
+      .divider{
+      background-color: #949594;
+      height: 1.5px;
+      width: 50px;
+      position: absolute;
+      top: 190px;
+      }
+      .bio{
+      position: absolute;
+      top: 220px;
+      color: #949594;
+      text-align: center;
+      font-size: 18px;
+      font-family: "Work Sans", sans-serif;
+      line-height: 28px;
+      }
+      .btn-logout{
+      position: absolute;
+      bottom: 30px;
+      background-color: #1b5e20;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      padding: 13px 23px;
+      left: 20px;
+      color: white;
+      font-family: "Work Sans", sans-serif;
+      }
+      .btn-logout:hover{
+        background: #c8e6c9;
+    }
+    .btn-cancel{
+      position: absolute;
+      bottom: 30px;
+      background-color: #b71c1c;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      padding: 13px 23px;
+      color: white;
+      right: 20px;
+      font-family: "Work Sans", sans-serif;
+      }
+      .btn-cancel:hover{
+        background: #ffcdd2;
+    }
+      .photo{
+      height: 100%;
+      width: 100%;
+      background: url(images/flower.jpg);
+      position: absolute;
+      bottom: 0;
+      background-size: 100% 100%;
+      border-radius: 8px;
+      transition: 1s;
+      }
+      .modal-content:hover .photo{
+      transform: scale(0.5,0.35) translateY(-650px);
+      background-size: 100% 150%;
+      background-position: 0 -25px;
+      border-radius: 50%;
+      }
     </style>
 </head>
 <body>
 <header>
   <div class="container">
     <div id="branding">
-      <img src="images/logo_fish.png" class="logo">
+      <img src="images/fish.png" class="logo">
     </div>
     <nav>
       <ul>
-        <li><a href="home.html">Home</a></li>
-        <li class="current"><a href="search.html">Crawler Center</a> </li>
+        <li><a th:href="@{/}">Home</a></li>
+        <li class="current"><a>Crawler Center</a> </li>
         <li><a href="">Profile</a> </li>
         <li><a href="">About</a> </li>
       </ul>
     </nav>
+    <div class="logout">
+      <img id="logout" src="images/user.png" class="user">
+    </div>
   </div>
 </header>
-<section id="showcase">
+<div><section id="showcase">
   <div class="container">
     <h1>Professional Scrapping Websites</h1>
     <p>Expected outcomes:
@@ -166,32 +291,60 @@
       Remote sensing photos</p>
   </div>
 </section>
-<section id="newsletter">
-  <div class="search-box">
-    <input class="search-txt" type="text" name="" placeholder="Type to search">
-    <a class="search-btn" href="#">
-      <i class="fas fa-search"></i>
-    </a>
+  <section id="newsletter">
+    <div class="search-box">
+      <input class="search-txt" type="text" name="" placeholder="Type to search">
+      <a class="search-btn" href="#">
+        <i class="fas fa-search"></i>
+      </a>
+    </div>
+  </section>
+  <section id="boxes">
+    <div class="container">
+      <div class="box">
+        <img src="images/github.png">
+        <h3>Github API</h3>
+        <p>Download zip files from your topic</p>
+      </div>
+      <div class="box">
+        <img src="images/k.png">
+        <h3>Kaggle API</h3>
+        <p>Download zip files from your topic</p>
+      </div>
+      <div class="box">
+        <img src="images/web.png">
+        <h3>Other websites</h3>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="bg-modal">
+  <div class="modal-content">
+    <div class="info">
+      <div class="name">Thiet Nguyen</div>
+      <div class="prof">Java Coder</div>
+      <div class="divider"></div>
+      <div class="bio">
+        Email: fillaytion23@gmail.com
+        User
+        Active : ON
+      </div>
+      <button class="btn-logout">Log out</button>
+      <button class="btn-cancel">Cancel</button>
+    </div>
+    <div class="photo"></div>
   </div>
-</section>
-<section id="boxes">
-  <div class="container">
-    <div class="box">
-      <img src="images/github.png">
-      <h3>Github API</h3>
-      <p>Download zip files from your topic</p>
-    </div>
-    <div class="box">
-      <img src="images/k.png">
-      <h3>Kaggle API</h3>
-      <p>Download zip files from your topic</p>
-    </div>
-    <div class="box">
-      <img src="images/web.png">
-      <h3>Other websites</h3>
-    </div>
-  </div>
-</section>
+</div>
 <footer>Crawler Web Design, Copying &copy; 2021</footer>
+<script>
+    document.getElementById('logout').addEventListener('click',
+    function(){
+        document.querySelector('.bg-modal').style.display = 'flex';
+    });
+    document.querySelector('.btn-cancel').addEventListener('click',
+    function(){
+        document.querySelector('.bg-modal').style.display = 'none';
+    });
+</script>
 </body>
 </html>

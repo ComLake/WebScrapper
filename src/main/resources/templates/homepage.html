@@ -6,51 +6,84 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:600|Work+Sans" rel="stylesheet">
     <link rel="stylesheet" href="profile1.css">
     <style>
-      *{ margin: 0;
-      padding: 0;}
-
-      .container{height: 100vh;
-      width: 100%;
+      body{
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      padding: 0;
+      margin: 0;
       background-image: url(images/background.jpg);
       background-position: center;
       background-size: cover;
-      padding-left: 5%;
-      padding-right: 5%;
       box-sizing: border-box;
       position: relative;
       }
-      .navbar{
-      width: 100%;
-      height: 15vh;
+      .container{
+      width: 80%;
+      height: 100%;
       margin: auto;
-      display: flex;
-      align-items: center;
+      overflow: hidden;
       }
-      .user{
+      #showcase{
+      min-height: 400px;
+      color: #fff;
+      }
+      ul{
+      margin: 0;
+      padding: 0;
+      }
+      header{
+      padding-top: 30px;
+      min-height: 50px;
+      }
+      header a{
+      text-decoration: none;
+      font-size: 16px;
+      }
+      header li{
+      float: left;
+      display: inline;
+      padding: 0 20px 0 20px;
+      }
+      header #branding{
+      float: left;
+      }
+      header #branding{
+      margin-top: 5px;
+      }
+      header nav{
+      float: right;
+      margin-top: 30px;
+      }
+      .logo{
+      width: 120px;
+      height: 100px;
+      cursor: pointer;
+      }
+      header .current a{
+      color: #1a237e;
+      font-weight: bold;
+      }
+      header a:hover{
+      color: #cccccc;
+      font-weight:bold;
+      }
+      footer{
+      margin-left: 20px;
+      }
+      .logout img{
+      position: absolute;
+      right: 40px;
+      top: 50px;
       width: 50px;
       height: 50px;
       cursor: pointer;
-      padding-top: 40px;
       }
-      nav{
-      flex: 1;
-      padding-left: 60px;
-      padding-top: 60px;
+      header .logout{
+      float: right;
       }
-      nav ul li{
-      display: inline-block;
-      list-style: none;
-      margin: 0px 20px;
-      }
-      nav ul li a{
-      text-decoration:none;
-      color: #1a237e;
-      }
-      .logo{
-      width: 160px;
-      height: 160px;
-      cursor: pointer;
-      margin-top: 5%;
+      header .logout{
+      margin: 0;
       }
       .content h1{
       font-size: 60px;
@@ -64,7 +97,7 @@
       color:#303f9f;
       }
       .content{
-      margin-left: 10%;
+      margin-left: 2%;
       margin-top: 10%
       }
       .content .btn
@@ -81,6 +114,7 @@
       .arrow-icons{
       margin-top: 40px;
       display: flex;
+      margin-bottom: 50px;
       }
       .arrow-icons img{
       width: 40px;
@@ -90,7 +124,7 @@
       height: 70%;
       position: absolute;
       bottom: 0;
-      right: 160px;
+      right: 70px;
       }
       .social_links{
       transform: rotate(-90deg);
@@ -178,8 +212,8 @@
       }
       .btn-logout:hover{
         background: #c8e6c9;
-      }
-      .btn-cancel{
+    }
+    .btn-cancel{
       position: absolute;
       bottom: 30px;
       background-color: #b71c1c;
@@ -193,11 +227,11 @@
       }
       .btn-cancel:hover{
         background: #ffcdd2;
-      }
+    }
       .photo{
       height: 100%;
       width: 100%;
-      background-image: url(images/flower.jpg);
+      background: url(images/flower.jpg);
       position: absolute;
       bottom: 0;
       background-size: 100% 100%;
@@ -213,14 +247,16 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="navbar">
-        <img src="images/logo_fish.png" class="logo">
+<header>
+    <div class="container">
+        <div id="branding">
+            <img src="images/fish.png" class="logo">
+        </div>
         <nav>
             <ul>
-                <li><a href="home.html">Home</a> </li>
+                <li class="current"><a href="home.html">Home</a></li>
+                <li><a th:href="@{/search}">Crawler Center</a> </li>
                 <li><a href="">Profile</a> </li>
-                <li><a href="search.html">Crawler Center</a> </li>
                 <li><a href="">About</a> </li>
             </ul>
         </nav>
@@ -228,39 +264,44 @@
             <img id="logout" src="images/user.png" class="user">
         </div>
     </div>
-    <div class="content">
-        <a href="" class="btn">ComLake API</a>
-        <h1>Data Acquisition <br> & Integration Tool</h1>
-        <p>The place that you can download everything</p>
-        <div class="arrow-icons">
-            <img src="images/left_arrow.png">
-            <img src="images/next_arrow.png">
-        </div>
-    </div>
-    <img src="images/sample_girl.png" class="feature-img">
-    <div class="social_links">
-        <a href="">FACEBOOK</a>
-        <a href="">GMAIL</a>
-        <a href="">GITHUB</a>
-    </div>
-</div>
-<div class="bg-modal">
-    <div class="modal-content">
-        <div class="info">
-            <div class="name">Thiet Nguyen</div>
-            <div class="prof">Java Coder</div>
-            <div class="divider"></div>
-            <div class="bio">
-                Email: fillaytion23@gmail.com
-                User
-                Active : ON
+</header>
+<section id="showcase">
+    <div class="container">
+        <div class="content">
+            <a href="" class="btn">ComLake API</a>
+            <h1>Data Acquisition <br> & Integration Tool</h1>
+            <p>The place that you can download everything</p>
+            <div class="arrow-icons">
+                <img src="images/left_arrow.png">
+                <img src="images/next_arrow.png">
             </div>
-            <button class="btn-logout">Log out</button>
-            <button class="btn-cancel">Cancel</button>
         </div>
-        <div class="photo"></div>
+        <img src="images/sample_girl.png" class="feature-img">
+        <div class="social_links">
+            <a href="">FACEBOOK</a>
+            <a href="">GMAIL</a>
+            <a href="">GITHUB</a>
+        </div>
     </div>
-</div>
+    <div class="bg-modal">
+        <div class="modal-content">
+            <div class="info">
+                <div class="name">Thiet Nguyen</div>
+                <div class="prof">Java Coder</div>
+                <div class="divider"></div>
+                <div class="bio">
+                    Email: fillaytion23@gmail.com
+                    User
+                    Active : ON
+                </div>
+                <button class="btn-logout" th:onclick="|window.location.href='/login'|" >Log out</button>
+                <button class="btn-cancel">Cancel</button>
+            </div>
+            <div class="photo"></div>
+        </div>
+    </div>
+</section>
+<footer>Crawler Web Design, Copying &copy; 2021</footer>
 <script>
     document.getElementById('logout').addEventListener('click',
     function(){
