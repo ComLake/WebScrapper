@@ -14,7 +14,10 @@ public class LinkResources {
     private String topic;
     @Column(name = "link")
     private String link;
-
+    @Column(name = "author")
+    private String author;
+    @Column(name = "name_dataset")
+    private String name_dataset;
     public LinkResources() {
     }
 
@@ -48,5 +51,21 @@ public class LinkResources {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getName_dataset() {
+        return name_dataset;
+    }
+
+    public void setName_dataset(String name_dataset) {
+        this.name_dataset = name_dataset;
     }
 }

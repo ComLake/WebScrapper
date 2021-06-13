@@ -14,4 +14,9 @@ public class SourcesServiceImpl implements SourcesService{
     public List<LinkResources> getAllResources() {
         return sourcesRepository.findAll();
     }
+
+    @Override
+    public void addSomeSourcesLink(LinkResources linkResources) {
+        this.sourcesRepository.save(linkResources);
+    }
 }

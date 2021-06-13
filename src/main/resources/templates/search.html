@@ -320,34 +320,36 @@
                 Remote sensing photos</p>
         </div>
     </section>
-    <section id="newsletter">
-        <div class="search-box">
-            <input class="search-txt" type="text" name="" placeholder="Type to search">
-            <a class="search-btn" href="#">
-                <i class="fas fa-search"></i>
-            </a>
-        </div>
-    </section>
-    <section id="boxes">
-        <div class="container">
-            <div class="box">
-                <img src="images/github.png">
-                <h3>Github API</h3>
-                <p>Download zip files from your topic</p>
-                <div class="checkbox"><input name="" type="checkbox"></div>
+    <form action="#" th:action="@{/search_request}" th:object="${sources}" method="POST">
+        <section id="newsletter">
+            <div class="search-box">
+                <input class="search-txt" type="text" th:field="*{topic}"name="" placeholder="Type to search">
+                <a class="search-btn" href="@{/storage}" onclick="this.closest('form').submit();return false;">
+                    <i class="fas fa-search"></i>
+                </a>
             </div>
-            <div class="box">
-                <img src="images/k.png">
-                <h3>Kaggle API</h3>
-                <p>Download zip files from your topic</p>
-                <div class="checkbox"><input name="" type="checkbox"></div>
+        </section>
+        <section id="boxes">
+            <div class="container">
+                <div class="box">
+                    <img src="images/github.png">
+                    <h3>Github API</h3>
+                    <p>Download zip files from your topic</p>
+                    <div class="checkbox"><input name="" type="checkbox" th:field="*{websites}" value="github"></div>
+                </div>
+                <div class="box">
+                    <img src="images/k.png">
+                    <h3>Kaggle API</h3>
+                    <p>Download zip files from your topic</p>
+                    <div class="checkbox"><input name="" type="checkbox" th:field="*{websites}" value="kaggle"></div>
+                </div>
+                <div class="box">
+                    <img src="images/web.png">
+                    <h3>Other websites</h3>
+                </div>
             </div>
-            <div class="box">
-                <img src="images/web.png">
-                <h3>Other websites</h3>
-            </div>
-        </div>
-    </section>
+        </section>
+    </form>
 </div>
 <div class="bg-modal">
     <div class="modal-content">

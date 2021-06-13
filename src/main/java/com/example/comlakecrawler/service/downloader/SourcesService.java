@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SourcesService {
     List<LinkResources>getAllResources();
+    void addSomeSourcesLink(LinkResources linkResources);
 }
