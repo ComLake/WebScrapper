@@ -1,6 +1,6 @@
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>"Ulake Crawler"</title>
+  <title>Crawler Center | Login</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
   <script src="https://kit.fontawesome.com/42deadbeef.js" crossorigin="anonymous"></script>
 <!--  <script src="js/jquery-3.3.1.min.js"></script>-->
@@ -191,18 +191,18 @@
         </div>
         <button class="box-button">Login</button>
       </form>
-      <form id="register_box"method="post">
+      <form id="register_box" th:action="@{/register}" method="post" th:object="${user}">
         <div class="inputs">
           <div class="input">
-            <input type="text" name="" placeholder="Email">
+            <input type="text" name="" placeholder="Email" th:field="*{email}">
             <img src="images/email.png">
           </div>
           <div class="input">
-            <input type="text" name="" placeholder="Username">
+            <input type="text" name="" placeholder="Username" th:field="*{username}">
             <img src="images/user-account-box.png">
           </div>
           <div class="input">
-            <input type="text" name="" placeholder="Password">
+            <input type="text" name="" placeholder="Password" th:field="*{password}">
             <img src="images/padlock.png">
           </div>
           <label class="checkbox">

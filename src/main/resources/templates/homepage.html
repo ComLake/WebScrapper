@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Crawler Center | Homepage</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:600|Work+Sans" rel="stylesheet">
     <link rel="stylesheet" href="profile1.css">
     <style>
@@ -286,13 +286,16 @@
     <div class="bg-modal">
         <div class="modal-content">
             <div class="info">
-                <div class="name">Thiet Nguyen</div>
+                <div class="name">
+<!--                    <span th:text="${user.username}"></span>-->
+                    Default user
+                </div>
                 <div class="prof">Java Coder</div>
                 <div class="divider"></div>
                 <div class="bio">
-                    Email: fillaytion23@gmail.com
-                    User
-                    Active : ON
+                    <span>Email: </span>
+<!--                    <span th:text="${user.email}"></span>-->
+                    Default email
                 </div>
                 <button class="btn-logout" th:onclick="|window.location.href='/login'|" >Log out</button>
                 <button class="btn-cancel">Cancel</button>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crawler Center | Storage</title>
+</head>
+<body>
+<div align="center">
+    <h1>Sources Result: </h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Topic</th>
+            <th>Website</th>
+            <th>Link</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sources : ${listSources}">
+            <td th:text="${sources.topic}"></td>
+            <td th:text="${sources.link}"></td>
+            <td th:text="${sources.websites}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

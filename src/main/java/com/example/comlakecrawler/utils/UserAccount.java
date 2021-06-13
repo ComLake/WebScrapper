@@ -3,60 +3,47 @@ package com.example.comlakecrawler.utils;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
-@Table(name = "clake_users")
+@Table(name = "user")
 public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = true)
-    private String affiliation;
-    @Column(nullable = true)
-    private String department;
-    @Column(nullable = false, unique = true,length = 45)
-    private String email;
-    @Column(nullable = false, unique = true, length = 20)
-    private String firstname;
-    @Column(nullable = true)
-    private String lastname;
-    @Column(nullable = false, length = 64)
-    private String password;
-    @Column(nullable = false)
+    private long ID;
+    @Column(name = "username")
     private String username;
+    @Column(name = "first_name")
+    private String firstname;
+    @Column(name = "last_name")
+    private String lastname;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "roles")
+    private ArrayList<String> roles;
+    @Column(name = "refresh_token")
+    private String refreshToken;
+    @Column(name = "token")
+    private String token;
+    @Column(name = "password")
+    private String password;
 
     public UserAccount() {
     }
 
-    public Long getId() {
-        return id;
+    public long getID() {
+        return ID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
-    public String getAffiliation() {
-        return affiliation;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAffiliation(String affiliation) {
-        this.affiliation = affiliation;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {
@@ -75,6 +62,38 @@ public class UserAccount {
         this.lastname = lastname;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public ArrayList<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -83,11 +102,16 @@ public class UserAccount {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public String getToString() {
+        return "UserAccount{" +
+                "username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", token='" + token + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

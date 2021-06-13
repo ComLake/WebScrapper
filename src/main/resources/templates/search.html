@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <meta name="description" content="Scrapper dataset from keyword">
-  <meta name="keywords" content="scrapper, crawler, dataset">
-  <meta name="author" content="Thiet Nguyen">
-  <title>Home</title>
-  <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Scrapper dataset from keyword">
+    <meta name="keywords" content="scrapper, crawler, dataset">
+    <meta name="author" content="Thiet Nguyen">
+    <title>Crawler Center | Search</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
+    <style>
       body{
       font-family: Arial, Helvetica, sans-serif;
       font-size: 15px;
@@ -228,8 +228,8 @@
       }
       .btn-logout:hover{
         background: #c8e6c9;
-    }
-    .btn-cancel{
+      }
+      .btn-cancel{
       position: absolute;
       bottom: 30px;
       background-color: #b71c1c;
@@ -243,7 +243,7 @@
       }
       .btn-cancel:hover{
         background: #ffcdd2;
-    }
+      }
       .photo{
       height: 100%;
       width: 100%;
@@ -260,80 +260,111 @@
       background-position: 0 -25px;
       border-radius: 50%;
       }
+       input[type="checkbox"]{
+      position: relative;
+      width: 50px;
+      height: 25px;
+      -webkit-appearance: none;
+      background: #c6c6c6;
+      outline: none;
+      border-radius: 20px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+      input:checked[type="checkbox"]{
+      background: #0288d1;
+      }
+      input[type="checkbox"]:before{
+      content: '';
+      width: 25px;
+      position: absolute;
+      height: 25px;
+      border-radius: 20px;
+      top: 0;
+      left: 0;
+      background: #fff;
+      transform: scale(1.1);
+      transition: 0.5s;
+      }
+      input:checked[type="checkbox"]:before{
+      left: 25px;
+      }
     </style>
 </head>
 <body>
 <header>
-  <div class="container">
-    <div id="branding">
-      <img src="images/fish.png" class="logo">
-    </div>
-    <nav>
-      <ul>
-        <li><a th:href="@{/}">Home</a></li>
-        <li class="current"><a>Crawler Center</a> </li>
-        <li><a href="">Profile</a> </li>
-        <li><a href="">About</a> </li>
-      </ul>
-    </nav>
-    <div class="logout">
-      <img id="logout" src="images/user.png" class="user">
-    </div>
-  </div>
-</header>
-<div><section id="showcase">
-  <div class="container">
-    <h1>Professional Scrapping Websites</h1>
-    <p>Expected outcomes:
-      Minimum 500 Gb of :
-      CT, X-ray scan of the human Body
-      Environment data : weather,..
-      Remote sensing photos</p>
-  </div>
-</section>
-  <section id="newsletter">
-    <div class="search-box">
-      <input class="search-txt" type="text" name="" placeholder="Type to search">
-      <a class="search-btn" href="#">
-        <i class="fas fa-search"></i>
-      </a>
-    </div>
-  </section>
-  <section id="boxes">
     <div class="container">
-      <div class="box">
-        <img src="images/github.png">
-        <h3>Github API</h3>
-        <p>Download zip files from your topic</p>
-      </div>
-      <div class="box">
-        <img src="images/k.png">
-        <h3>Kaggle API</h3>
-        <p>Download zip files from your topic</p>
-      </div>
-      <div class="box">
-        <img src="images/web.png">
-        <h3>Other websites</h3>
-      </div>
+        <div id="branding">
+            <img src="images/fish.png" class="logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li class="current"><a>Crawler Center</a></li>
+                <li><a href="">Profile</a></li>
+                <li><a href="">About</a></li>
+            </ul>
+        </nav>
+        <div class="logout">
+            <img id="logout" src="images/user.png" class="user">
+        </div>
     </div>
-  </section>
+</header>
+<div>
+    <section id="showcase">
+        <div class="container">
+            <h1>Professional Scrapping Websites</h1>
+            <p>Expected outcomes:
+                Minimum 500 Gb of :
+                CT, X-ray scan of the human Body
+                Environment data : weather,..
+                Remote sensing photos</p>
+        </div>
+    </section>
+    <section id="newsletter">
+        <div class="search-box">
+            <input class="search-txt" type="text" name="" placeholder="Type to search">
+            <a class="search-btn" href="#">
+                <i class="fas fa-search"></i>
+            </a>
+        </div>
+    </section>
+    <section id="boxes">
+        <div class="container">
+            <div class="box">
+                <img src="images/github.png">
+                <h3>Github API</h3>
+                <p>Download zip files from your topic</p>
+                <div class="checkbox"><input name="" type="checkbox"></div>
+            </div>
+            <div class="box">
+                <img src="images/k.png">
+                <h3>Kaggle API</h3>
+                <p>Download zip files from your topic</p>
+                <div class="checkbox"><input name="" type="checkbox"></div>
+            </div>
+            <div class="box">
+                <img src="images/web.png">
+                <h3>Other websites</h3>
+            </div>
+        </div>
+    </section>
 </div>
 <div class="bg-modal">
-  <div class="modal-content">
-    <div class="info">
-      <div class="name">Thiet Nguyen</div>
-      <div class="prof">Java Coder</div>
-      <div class="divider"></div>
-      <div class="bio">
-        Email: fillaytion23@gmail.com
-        User
-        Active : ON
-      </div>
-      <button class="btn-logout">Log out</button>
-      <button class="btn-cancel">Cancel</button>
+    <div class="modal-content">
+        <div class="info">
+            <div class="name">Thiet Nguyen</div>
+            <div class="prof">Java Coder</div>
+            <div class="divider"></div>
+            <div class="bio">
+                Email: fillaytion23@gmail.com
+                User
+                Active : ON
+            </div>
+            <button class="btn-logout" th:onclick="|window.location.href='/login'|">Log out</button>
+            <button class="btn-cancel">Cancel</button>
+        </div>
+        <div class="photo"></div>
     </div>
-    <div class="photo"></div>
-  </div>
 </div>
 <footer>Crawler Web Design, Copying &copy; 2021</footer>
 <script>
@@ -345,6 +376,8 @@
     function(){
         document.querySelector('.bg-modal').style.display = 'none';
     });
+
+
 </script>
 </body>
 </html>
