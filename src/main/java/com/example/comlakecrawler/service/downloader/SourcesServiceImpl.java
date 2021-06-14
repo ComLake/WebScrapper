@@ -32,20 +32,12 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             githubSearchEngine.setListener(this);
             githubSearchEngine.setKeySeek(sourcesRegister.getTopic());
             githubSearchEngine.scrapper();
-//            LinkResources linkResources = new LinkResources();
-//            linkResources.setTopic(sourcesRegister.getTopic());
-//            linkResources.setWebsites("github");
-//            this.sourcesRepository.save(linkResources);
         }
         if (sourcesRegister.isKaggle()){
             KaggleCrawler kaggleSearchEngine = new KaggleCrawler();
             kaggleSearchEngine.setListener(this);
             kaggleSearchEngine.setKeySeek(sourcesRegister.getTopic());
             kaggleSearchEngine.scrapper();
-//            LinkResources linkResources_1 = new LinkResources();
-//            linkResources_1.setTopic(sourcesRegister.getTopic());
-//            linkResources_1.setWebsites("kaggle");
-//            this.sourcesRepository.save(linkResources_1);
         }
     }
 
