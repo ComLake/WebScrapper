@@ -114,7 +114,7 @@
             <td th:text="${sources.author}"></td>
             <td th:text="${sources.name_dataset}"></td>
             <td th:text="${sources.websites}"></td>
-            <td data-label="#"><a href="#"class="download">Download</a></td>
+            <td data-label="#"><a th:href="@{/showSourcesForUpdate/{id}(id=${sources.id})}" class="download">Download</a></td>
         </tr>
         </tbody>
     </table>

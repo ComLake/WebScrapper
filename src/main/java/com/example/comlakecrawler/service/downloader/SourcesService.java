@@ -8,4 +8,6 @@ import java.util.List;
 public interface SourcesService {
     List<LinkResources>getAllResources();
     void addSomeSourcesLink(SourcesRegistration sourcesRegister);
+    LinkResources getLinksById(long id);
+    void downloadSources(long id);
 }

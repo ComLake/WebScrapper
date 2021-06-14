@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
     @Autowired
@@ -31,6 +33,23 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             linkResources_1.setWebsites("kaggle");
             this.sourcesRepository.save(linkResources_1);
         }
+    }
+
+    @Override
+    public LinkResources getLinksById(long id) {
+        Optional<LinkResources>optionalLink = sourcesRepository.findById(id);
+        LinkResources linkResources = null;
+        if (optionalLink.isPresent()){
+            linkResources = optionalLink.get();
+        }else {
+            throw new RuntimeException(" Link is not found for id :: "+id);
+        }
+        return linkResources;
+    }
+
+    @Override
+    public void downloadSources(long id) {
+        this.sourcesRepository.deleteById(id);
     }
 
     @Override

@@ -26,19 +26,12 @@ public class LinkResourcesController {
     }
     @PostMapping("/search_request")
     public String getSearchResult(@ModelAttribute ("sourcesRegister")SourcesRegistration sourcesRegister){
-//        if (sourcesRegister.isKaggle()){
-//            LinkResources sources = new LinkResources();
-//            sources.setWebsites("kaggle");
-//            sources.setTopic(sourcesRegister.getTopic());
-//            sourcesService.addSomeSourcesLink(sources);
-//        }
-//        if (sourcesRegister.isGithub()){
-//            LinkResources sources_1 = new LinkResources();
-//            sources_1.setWebsites("github");
-//            sources_1.setTopic(sourcesRegister.getTopic());
-//            sourcesService.addSomeSourcesLink(sources_1);
-//        }
         sourcesService.addSomeSourcesLink(sourcesRegister);
+        return "redirect:/result";
+    }
+    @GetMapping("/showSourcesForUpdate/{id}")
+    public String showSourcesForUpdate(@PathVariable (value = "id")long id){
+        sourcesService.downloadSources(id);
         return "redirect:/result";
     }
 }

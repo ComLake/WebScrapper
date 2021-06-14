@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class LinkResources {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    @Column(name="id", nullable = false, updatable = false)
+    private long id;
     @Column(name = "websites")
     private String websites;
     @Column(name = "topic")
@@ -21,12 +22,12 @@ public class LinkResources {
     public LinkResources() {
     }
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getWebsites() {
