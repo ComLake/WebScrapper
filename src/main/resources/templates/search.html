@@ -320,7 +320,7 @@
                 Remote sensing photos</p>
         </div>
     </section>
-    <form action="#" th:action="@{/search_request}" th:object="${sources}" method="POST">
+    <form action="#" th:action="@{/search_request}" th:object="${sourcesRegister}" method="POST">
         <section id="newsletter">
             <div class="search-box">
                 <input class="search-txt" type="text" th:field="*{topic}"name="" placeholder="Type to search">
@@ -335,13 +335,13 @@
                     <img src="images/github.png">
                     <h3>Github API</h3>
                     <p>Download zip files from your topic</p>
-                    <div class="checkbox"><input name="" type="checkbox" th:field="*{websites}" value="github"></div>
+                    <div class="checkbox"><input name="" type="checkbox" th:field="*{github}" value="github"></div>
                 </div>
                 <div class="box">
                     <img src="images/k.png">
                     <h3>Kaggle API</h3>
                     <p>Download zip files from your topic</p>
-                    <div class="checkbox"><input name="" type="checkbox" th:field="*{websites}" value="kaggle"></div>
+                    <div class="checkbox"><input name="" type="checkbox" th:field="*{kaggle}" value="kaggle"></div>
                 </div>
                 <div class="box">
                     <img src="images/web.png">
