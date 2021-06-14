@@ -44,7 +44,7 @@ public abstract class Crawler {
     }
     public void saveLinks(){
         if (listener!=null){
-            listener.updateSources(sources);
+            listener.updateSources(keySeek,sources);
         }
     }
 }

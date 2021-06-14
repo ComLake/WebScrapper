@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static com.example.comlakecrawler.service.config.Annotation.*;
 
-public class GithubCrawler extends Crawler{
+public class GithubCrawler extends Crawler {
     public GithubCrawler() {
         sources = new ArrayList<>();
     }
@@ -23,43 +23,43 @@ public class GithubCrawler extends Crawler{
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                while (!isExit){
+                while (!isExit) {
                     try {
                         File file = new File(path);
-                        if (!file.exists()){
+                        if (!file.exists()) {
                             file.getParentFile().mkdirs();
                             file.createNewFile();
                             URL url = new URL(link);
-                            HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                             urlConnection.setRequestMethod("GET");
-                            urlConnection.setRequestProperty("User-Agent","Mozilla/5.0");
+                            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
                             int responseCode = urlConnection.getResponseCode();
-                            System.out.println("\nSending 'GET' Request to URL"+url);
-                            System.out.println("Response code :"+responseCode);
+                            System.out.println("\nSending 'GET' Request to URL" + url);
+                            System.out.println("Response code :" + responseCode);
                             double fileSize = (double) urlConnection.getContentLengthLong();
                             BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                             FileOutputStream fileOS = new FileOutputStream(file);
-                            BufferedOutputStream outputStream = new BufferedOutputStream(fileOS,BUFFER_SIZE);
-                            byte[]buffer = new byte[BUFFER_SIZE];
+                            BufferedOutputStream outputStream = new BufferedOutputStream(fileOS, BUFFER_SIZE);
+                            byte[] buffer = new byte[BUFFER_SIZE];
                             double downloaded = 0.00;
                             int percentagesDownload;
                             int read;
-                            while ((read = inputStream.read(buffer,0,BUFFER_SIZE))!=-1){
-                                outputStream.write(buffer,0,read);
+                            while ((read = inputStream.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                                outputStream.write(buffer, 0, read);
                                 downloaded += read;
-                                percentagesDownload = (int)((downloaded*100L)/fileSize);
+                                percentagesDownload = (int) ((downloaded * 100L) / fileSize);
                                 System.out.println("Downloaded " + percentagesDownload + "% of the files..");
                             }
                             outputStream.close();
                             inputStream.close();
-                            if (listener!=null){
-                                listener.storageReport(path,link);
+                            if (listener != null) {
+                                listener.storageReport(path, link);
                             }
                             System.out.println("Downloaded!");
-                        }else {
+                        } else {
                             System.out.println("file is already exist");
                         }
-                    }catch (IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     onStop();
@@ -76,7 +76,7 @@ public class GithubCrawler extends Crawler{
             @Override
             public void run() {
                 String url = GITHUB_API_BASE_URL + GITHUB_API_SEARCH_REPOSITORIES + keySeek;
-                while (!isExit){
+                while (!isExit) {
                     try {
                         URL direct = new URL(url);
                         HttpURLConnection httpURLConnection = (HttpURLConnection) direct.openConnection();
@@ -103,9 +103,7 @@ public class GithubCrawler extends Crawler{
                             String linkSource = object.getString("archive_url").replace("{archive_format}{/ref}",
                                     GITHUB_ZIP_DOWNLOAD);
                             System.out.println(linkSource);
-                            if (i < 5) {
-                                sources.add(linkSource);
-                            }
+                            sources.add(linkSource);
                         }
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
@@ -113,7 +111,7 @@ public class GithubCrawler extends Crawler{
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }finally {
+                    } finally {
                         saveLinks();
                         onStop();
                     }

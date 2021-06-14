@@ -112,15 +112,14 @@ public class KaggleCrawler extends Crawler {
                         JSONArray kaggleArray = new JSONArray(response.toString());
                         for (int i = 0; i < kaggleArray.length(); i++) {
                             JSONObject kaggleObject = (JSONObject) kaggleArray.get(i);
-                            if (i < 2) {
-                                String dataDownload = kaggleObject.getString("ref");
-                                StringBuffer kaggleDownload = new StringBuffer();
-                                kaggleDownload.append(KAGGLE_API_BASE_URL);
-                                kaggleDownload.append(KAGGLE_ZIP_DOWNLOAD);
-                                kaggleDownload.append(dataDownload);
-                                System.out.println(kaggleDownload.toString());
-                                sources.add(kaggleDownload.toString());
-                            }
+                            String dataDownload = kaggleObject.getString("ref");
+                            StringBuffer kaggleDownload = new StringBuffer();
+                            kaggleDownload.append(KAGGLE_API_BASE_URL);
+                            kaggleDownload.append(KAGGLE_ZIP_DOWNLOAD);
+                            kaggleDownload.append(dataDownload);
+                            System.out.println(kaggleDownload.toString());
+                            sources.add(kaggleDownload.toString());
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
