@@ -344,8 +344,22 @@
                     <div class="checkbox"><input name="" type="checkbox" th:field="*{kaggle}" value="kaggle"></div>
                 </div>
                 <div class="box">
-                    <img src="images/web.png">
-                    <h3>Other websites</h3>
+                    <img src="images/dropbox.png">
+                    <h3>Dropbox API</h3>
+                    <p>Download zip files from your topic</p>
+                    <div class="checkbox"><input name="" type="checkbox"></div>
+                </div>
+                <div class="box">
+                    <img src="images/drive.png">
+                    <h3>GoogleDrive API</h3>
+                    <p>Download zip files from your topic</p>
+                    <div class="checkbox"><input name="" type="checkbox"></div>
+                </div>
+                <div class="box">
+                    <img src="images/box.png">
+                    <h3>Box API</h3>
+                    <p>Download zip files from your topic</p>
+                    <div class="checkbox"><input name="" type="checkbox"></div>
                 </div>
             </div>
         </section>
@@ -354,13 +368,15 @@
 <div class="bg-modal">
     <div class="modal-content">
         <div class="info">
-            <div class="name">Thiet Nguyen</div>
-            <div class="prof">Java Coder</div>
+            <div class="name">
+                <!--                    <span th:text="${user.username}"></span>-->
+                Chill cùng tôi
+            </div>
+            <div class="prof">(Số 8)</div>
             <div class="divider"></div>
             <div class="bio">
-                Email: fillaytion23@gmail.com
-                User
-                Active : ON
+                <span></span>
+                Là tên hề nhưng anh chưa từng khiến em cười vì anh lần nào :)))
             </div>
             <button class="btn-logout" th:onclick="|window.location.href='/login'|">Log out</button>
             <button class="btn-cancel">Cancel</button>

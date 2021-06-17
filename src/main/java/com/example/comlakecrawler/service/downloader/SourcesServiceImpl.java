@@ -1,6 +1,7 @@
 package com.example.comlakecrawler.service.downloader;
 
 import com.example.comlakecrawler.repository.SourcesRepository;
+import com.example.comlakecrawler.service.config.OfflineFileHandle;
 import com.example.comlakecrawler.service.downloader.target.Crawler;
 import com.example.comlakecrawler.service.downloader.target.GithubCrawler;
 import com.example.comlakecrawler.service.downloader.target.KaggleCrawler;
@@ -18,6 +19,7 @@ import static com.example.comlakecrawler.service.config.Annotation.*;
 @Service
 public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
     private ArrayList<LinkResources>linkResources = new ArrayList<>();
+    private final String path = "D:\\save\\sources\\";
     @Autowired
     private SourcesRepository sourcesRepository;
     @Override
@@ -55,12 +57,59 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
 
     @Override
     public void downloadSources(long id) {
+        LinkResources linkResources = getLinksById(id);
+        String link = linkResources.getLink();
+        if (link.contains("kaggle")){
+            KaggleCrawler kaggleSearchEngine = new KaggleCrawler();
+            kaggleSearchEngine.setListener(this);
+            kaggleSearchEngine.setKeySeek(linkResources.getTopic());
+            StringBuffer linkBased = new StringBuffer();
+            StringBuffer downloadPath = new StringBuffer();
+            StringBuffer texture = new StringBuffer();
+            linkBased.append(KAGGLE_API_BASE_URL);
+            downloadPath.append(KAGGLE_ZIP_DOWNLOAD);
+            texture.append("/");
+            String nameTheZip = link.replaceAll(linkBased.toString(),"");
+            nameTheZip = nameTheZip.replaceAll(downloadPath.toString(),"");
+            nameTheZip = nameTheZip.replaceAll(texture.toString(),"");
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(nameTheZip);
+            buffer.append(".zip");
+            StringBuffer destiny = new StringBuffer();
+            destiny.append(path);
+            destiny.append(buffer);
+            System.out.println("Downloading.. "+buffer + " to "+destiny);
+            kaggleSearchEngine.download(link,destiny.toString());
+        }else if (linkResources.getLink().contains("github")){
+            GithubCrawler githubSearchEngine = new GithubCrawler();
+            githubSearchEngine.setListener(this);
+            githubSearchEngine.setKeySeek(linkResources.getTopic());
+            StringBuffer linkBased = new StringBuffer();
+            StringBuffer downloadPath = new StringBuffer();
+            StringBuffer texture = new StringBuffer();
+            linkBased.append(GITHUB_API_BASE_URL+GITHUB_REPOS);
+            downloadPath.append("/"+GITHUB_ZIP_DOWNLOAD);
+            texture.append("/");
+            String nameTheZip = link.replaceAll(linkBased.toString(),"");
+            nameTheZip = nameTheZip.replaceAll(downloadPath.toString(),"");
+            nameTheZip = nameTheZip.replaceAll(texture.toString(),"");
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(nameTheZip);
+            buffer.append(".zip");
+            StringBuffer destiny = new StringBuffer();
+            destiny.append(path);
+            destiny.append(buffer);
+            System.out.println("Downloading.. "+buffer + " to "+destiny);
+            githubSearchEngine.download(link,destiny.toString());
+        }else {
+            throw new RuntimeException("This website haven't been supported");
+        }
         this.sourcesRepository.deleteById(id);
     }
 
     @Override
     public void storageReport(String file, String link) {
-
+        new OfflineFileHandle().unpacking(file);
     }
 
     @Override
@@ -83,7 +132,6 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             }else if (link.contains("github")){
                 StringBuffer linkBased = new StringBuffer();
                 StringBuffer downloadPath = new StringBuffer();
-                StringBuffer texture = new StringBuffer();
                 linkBased.append(GITHUB_API_BASE_URL+GITHUB_REPOS);
                 downloadPath.append("/"+GITHUB_ZIP_DOWNLOAD);
                 String nameTheZip = link.replaceAll(linkBased.toString(),"");

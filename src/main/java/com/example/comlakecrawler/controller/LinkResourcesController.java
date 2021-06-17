@@ -31,6 +31,7 @@ public class LinkResourcesController {
     }
     @GetMapping("/showSourcesForUpdate/{id}")
     public String showSourcesForUpdate(@PathVariable (value = "id")long id){
+        sourcesService.getLinksById(id);
         sourcesService.downloadSources(id);
         return "redirect:/result";
     }
