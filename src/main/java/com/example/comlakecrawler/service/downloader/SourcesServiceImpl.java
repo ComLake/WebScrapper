@@ -41,8 +41,10 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             kaggleSearchEngine.scrapper();
         }
         if (sourcesRegister.isDropbox()){
-//            DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
-//            dropBoxCrawler.searchAndDownloadMachine(sourcesRegister.getTopic());
+            DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
+            dropBoxCrawler.setListener(this);
+            dropBoxCrawler.setTopic(sourcesRegister.getTopic());
+            dropBoxCrawler.searchMachine();
         }
         if (sourcesRegister.isBox()){
             BoxCrawler boxCrawler = new BoxCrawler();
@@ -115,6 +117,11 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             String linkDownload = linkResources.getLink();
             String []arraySet = linkDownload.split(":",-1);
             boxCrawler.downloadFile(arraySet[2]);
+        }else if(linkResources.getLink().contains("dbx")){
+            DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
+            String linkDbxDownload = linkResources.getLink();
+            String []arrayDbx = linkDbxDownload.split(":",-1);
+            dropBoxCrawler.download(arrayDbx[2].replace("/",""),arrayDbx[2]);
         }
         else {
             throw new RuntimeException("This website haven't been supported");
@@ -164,6 +171,13 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
                 linkResources.setTopic(topic);
                 linkResources.setAuthor(arrayBox[5]);
                 linkResources.setName_dataset(arrayBox[3]);
+            }else if (link.contains("dbx")){
+                String[] arrayBox = link.split(":",-1);
+                linkResources.setWebsites("dropbox");
+                linkResources.setLink(link);
+                linkResources.setTopic(topic);
+                linkResources.setAuthor("");
+                linkResources.setName_dataset(arrayBox[2].replace("/",""));
             }
             this.sourcesRepository.save(linkResources);
         }
