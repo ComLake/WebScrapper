@@ -4,6 +4,8 @@ public class SourcesRegistration {
     private String topic;
     private boolean kaggle;
     private boolean github;
+    private boolean box;
+    private boolean dropbox;
 
     public SourcesRegistration() {
     }
@@ -30,5 +32,21 @@ public class SourcesRegistration {
 
     public void setGithub(boolean github) {
         this.github = github;
+    }
+
+    public boolean isBox() {
+        return box;
+    }
+
+    public void setBox(boolean box) {
+        this.box = box;
+    }
+
+    public boolean isDropbox() {
+        return dropbox;
+    }
+
+    public void setDropbox(boolean dropbox) {
+        this.dropbox = dropbox;
     }
 }

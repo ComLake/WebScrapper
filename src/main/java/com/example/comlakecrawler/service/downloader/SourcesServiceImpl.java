@@ -1,10 +1,9 @@
 package com.example.comlakecrawler.service.downloader;
 
+import com.dropbox.core.DbxException;
 import com.example.comlakecrawler.repository.SourcesRepository;
 import com.example.comlakecrawler.service.config.OfflineFileHandle;
-import com.example.comlakecrawler.service.downloader.target.Crawler;
-import com.example.comlakecrawler.service.downloader.target.GithubCrawler;
-import com.example.comlakecrawler.service.downloader.target.KaggleCrawler;
+import com.example.comlakecrawler.service.downloader.target.*;
 import com.example.comlakecrawler.utils.LinkResources;
 import com.example.comlakecrawler.utils.SourcesRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +39,16 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             kaggleSearchEngine.setListener(this);
             kaggleSearchEngine.setKeySeek(sourcesRegister.getTopic());
             kaggleSearchEngine.scrapper();
+        }
+        if (sourcesRegister.isDropbox()){
+//            DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
+//            dropBoxCrawler.searchAndDownloadMachine(sourcesRegister.getTopic());
+        }
+        if (sourcesRegister.isBox()){
+            BoxCrawler boxCrawler = new BoxCrawler();
+            boxCrawler.setListener(this);
+            boxCrawler.setTopic(sourcesRegister.getTopic());
+            boxCrawler.searchForTopic();
         }
     }
 
@@ -101,7 +110,13 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             destiny.append(buffer);
             System.out.println("Downloading.. "+buffer + " to "+destiny);
             githubSearchEngine.download(link,destiny.toString());
-        }else {
+        }else if (linkResources.getLink().contains("box")){
+            BoxCrawler boxCrawler = new BoxCrawler();
+            String linkDownload = linkResources.getLink();
+            String []arraySet = linkDownload.split(":",-1);
+            boxCrawler.downloadFile(arraySet[2]);
+        }
+        else {
             throw new RuntimeException("This website haven't been supported");
         }
         this.sourcesRepository.deleteById(id);
@@ -142,6 +157,13 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
                 linkResources.setTopic(topic);
                 linkResources.setAuthor(array[0]);
                 linkResources.setName_dataset(array[1]);
+            }else if(link.contains("box")){
+                String[] arrayBox = link.split(":",-1);
+                linkResources.setWebsites(arrayBox[1]);
+                linkResources.setLink(link);
+                linkResources.setTopic(topic);
+                linkResources.setAuthor(arrayBox[5]);
+                linkResources.setName_dataset(arrayBox[3]);
             }
             this.sourcesRepository.save(linkResources);
         }
