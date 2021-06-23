@@ -47,7 +47,7 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
             dropBoxCrawler.setListener(this);
             dropBoxCrawler.setTopic(sourcesRegister.getTopic());
-            dropBoxCrawler.setUrlSharingLink("https://www.dropbox.com/sh/zq61dzurivl4p19/AAAWtTmFzGAo22fjP-YEMR_0a?dl=0");
+            dropBoxCrawler.setUrlSharingLink(sourcesRegister.getLinkSharedDbx());
             dropBoxCrawler.searchMachine();
 //            System.out.println(dropBoxCrawler.getUrlSharingLink());
         }

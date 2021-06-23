@@ -6,6 +6,9 @@ public class SourcesRegistration {
     private boolean github;
     private boolean box;
     private boolean dropbox;
+    private String linkSharedDbx;
+    private String linkSharedBox;
+    private String linkSharedDrive;
 
     public SourcesRegistration() {
     }
@@ -48,5 +51,29 @@ public class SourcesRegistration {
 
     public void setDropbox(boolean dropbox) {
         this.dropbox = dropbox;
+    }
+
+    public String getLinkSharedDbx() {
+        return linkSharedDbx;
+    }
+
+    public void setLinkSharedDbx(String linkSharedDbx) {
+        this.linkSharedDbx = linkSharedDbx;
+    }
+
+    public String getLinkSharedBox() {
+        return linkSharedBox;
+    }
+
+    public void setLinkSharedBox(String linkSharedBox) {
+        this.linkSharedBox = linkSharedBox;
+    }
+
+    public String getLinkSharedDrive() {
+        return linkSharedDrive;
+    }
+
+    public void setLinkSharedDrive(String linkSharedDrive) {
+        this.linkSharedDrive = linkSharedDrive;
     }
 }
