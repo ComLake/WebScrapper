@@ -9,6 +9,9 @@ import com.dropbox.core.v2.sharing.*;
 import com.dropbox.core.v2.users.FullAccount;
 import com.example.comlakecrawler.service.downloader.CrawlerInterface;
 import com.sun.istack.Nullable;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DropBoxCrawler {
+    private final static String path = "D:\\save\\sources";
     private String topic;
     private CrawlerInterface listener;
     private DbxClientV2 client;
@@ -76,15 +80,7 @@ public class DropBoxCrawler {
             while (true) {
                 for (Metadata metadata : result.getEntries()) {
                     if (metadata.getName().contains(topic)) {
-                        sharingBuilderResult(client,metadata.getPathLower());
-//                        System.out.println(metadata.getName());
-
-//                        String urlSharingFile = sharingBuilderResult(client,metadata.getPathLower());
-//                        String[]arg = urlSharingFile.split("/",-1);
-//                        for (int i = 0; i < arg.length; i++) {
-//                            System.out.print(arg[i]+" : ");
-//                        }
-//                        sources.add(urlSharingFile);
+                        sharingBuilderResult(client, metadata.getPathLower());
                     }
                 }
                 if (!result.getHasMore()) {
@@ -99,20 +95,26 @@ public class DropBoxCrawler {
         }
     }
 
-    public void sharingBuilderResult(DbxClientV2 client,String path) {
+    public void sharingBuilderResult(DbxClientV2 client, String path) {
         ListSharedLinksResult listSharedLinksResult = null;
         try {
             listSharedLinksResult = client.sharing()
                     .listSharedLinksBuilder()
                     .withPath(path).withDirectOnly(true)
                     .start();
+            if (listSharedLinksResult.getLinks().toString().equals("[]")) {
+                createLinkSharingFile(client, path);
+            }
+            String jsonTarget = listSharedLinksResult.getLinks().toString();
+            System.out.println(jsonTarget);
+            JSONArray jArray = new JSONArray(jsonTarget);
+            JSONObject jObject = jArray.getJSONObject(0);
+            sources.add("[{\"url\":\""+jObject.get("url")+"\",\"name\":\""+jObject.get("name")+"\"}]"+":dbx");
         } catch (DbxException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (listSharedLinksResult.getLinks().toString().equals("[]")){
-            createLinkSharingFile(client,path);
-        }
-        System.out.println(listSharedLinksResult.getLinks());
     }
 
     public void download(String filename, String pathMetadata) {
@@ -143,7 +145,7 @@ public class DropBoxCrawler {
     public void createLinkSharingFile(DbxClientV2 client, String pathLower) {
         SharedLinkMetadata sharedLinkMetadata = null;
         try {
-                sharedLinkMetadata = client.sharing().createSharedLinkWithSettings(pathLower);
+            sharedLinkMetadata = client.sharing().createSharedLinkWithSettings(pathLower);
         } catch (CreateSharedLinkWithSettingsErrorException ex) {
             System.out.println(ex);
         } catch (DbxException ex) {
@@ -175,7 +177,6 @@ public class DropBoxCrawler {
             SharedLinkMetadata sharedLinkMetadata = client.sharing().
                     getSharedLinkMetadata(url);
             String name = sharedLinkMetadata.getName();
-            String path = "D:\\save\\sources";
             File file = new File(path, name);
             FileOutputStream outputStream = new FileOutputStream(file);
             client.sharing().getSharedLinkFile(url).download(outputStream);

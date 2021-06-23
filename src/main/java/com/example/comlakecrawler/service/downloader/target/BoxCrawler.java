@@ -112,7 +112,7 @@ public class BoxCrawler {
         System.out.println("--=Results fullResultSize: "+ searchResult.fullSize() + "==--");
         for (BoxItem.Info info:searchResult) {
 //            System.out.println("File Found: "+info.getID()+" : "+info.getName()+", Owner: "+info.getOwnedBy().getID());
-            sources.add("no_link:box:"+info.getID()+":"+info.getName()+":"+info.getOwnedBy().getID()+":"+info.getOwnedBy().getName() );
+            sources.add("boxnet:box:"+info.getID()+":"+info.getName()+":"+info.getOwnedBy().getID()+":"+info.getOwnedBy().getName() );
         }
         saveLink();
     }

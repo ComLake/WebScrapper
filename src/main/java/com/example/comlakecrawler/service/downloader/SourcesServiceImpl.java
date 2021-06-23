@@ -6,6 +6,9 @@ import com.example.comlakecrawler.service.config.OfflineFileHandle;
 import com.example.comlakecrawler.service.downloader.target.*;
 import com.example.comlakecrawler.utils.LinkResources;
 import com.example.comlakecrawler.utils.SourcesRegistration;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -114,15 +117,15 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             destiny.append(buffer);
             System.out.println("Downloading.. "+buffer + " to "+destiny);
             githubSearchEngine.download(link,destiny.toString());
-        }else if (linkResources.getLink().contains("box")){
-            BoxCrawler boxCrawler = new BoxCrawler();
-            String linkDownload = linkResources.getLink();
-            String []arraySet = linkDownload.split(":",-1);
-            boxCrawler.downloadFile(arraySet[2]);
+        }else if (linkResources.getLink().contains("boxnet")){
+//            BoxCrawler boxCrawler = new BoxCrawler();
+//            String linkDownload = linkResources.getLink();
+//            String []arraySet = linkDownload.split(":",-1);
+//            boxCrawler.downloadFile(arraySet[2]);
         }else if(linkResources.getLink().contains("dropbox.com")){
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
-            String linkDbxDownload = linkResources.getLink();
-            dropBoxCrawler.downloadSharingFileWithURl(linkDbxDownload);
+//            String linkDbxDownload = linkResources.getLink();
+            dropBoxCrawler.downloadSharingFileWithURl(linkResources.getLink());
         }
         else {
             throw new RuntimeException("This website haven't been supported");
@@ -165,20 +168,25 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
                 linkResources.setTopic(topic);
                 linkResources.setAuthor(array[0]);
                 linkResources.setName_dataset(array[1]);
-            }else if(link.contains("box")){
+            }else if(link.contains("boxnet")){
                 String[] arrayBox = link.split(":",-1);
                 linkResources.setWebsites(arrayBox[1]);
                 linkResources.setLink(link);
                 linkResources.setTopic(topic);
                 linkResources.setAuthor(arrayBox[5]);
                 linkResources.setName_dataset(arrayBox[3]);
-            }else if (link.contains("dropbox.com")){
-                String[] arrayBox = link.split(":",-1);
-                linkResources.setWebsites("dropbox");
-                linkResources.setLink(link);
-                linkResources.setTopic(topic);
-                linkResources.setAuthor("");
-                linkResources.setName_dataset(arrayBox[1].replace("/",""));
+            }else if (link.contains("dbx")){
+                try {
+                    JSONArray jsonArray = new JSONArray(link);
+                    JSONObject jsonObject = (JSONObject)jsonArray.get(0);
+                    linkResources.setWebsites("dropbox");
+                    linkResources.setLink(jsonObject.get("url").toString());
+                    linkResources.setTopic(topic);
+                    linkResources.setAuthor("");
+                    linkResources.setName_dataset(jsonObject.get("name").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             this.sourcesRepository.save(linkResources);
         }
