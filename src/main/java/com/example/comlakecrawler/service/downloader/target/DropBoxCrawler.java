@@ -71,7 +71,25 @@ public class DropBoxCrawler {
     public void setTopic(String topic) {
         this.topic = topic;
     }
-
+    public void checkAndCreateSharedLink(){
+        boolean run = true;
+        try {
+            ListFolderResult result = client.files().listFolder("/"+nameOfSharingFolder(urlSharingLink,client));
+            while (run){
+                for (Metadata metadata : result.getEntries()){
+                    ListSharedLinksResult linksResult = client.sharing().
+                            listSharedLinksBuilder().
+                            withPath(metadata.getPathLower()).withDirectOnly(true).start();
+                    if (linksResult.getLinks().toString().equals("[]")) {
+                        createLinkSharingFile(client, metadata.getPathLower());
+                    }
+                }
+                run = false;
+            }
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+    }
     public void searchMachine() {
         System.out.println("DO SEARCH");
         ListFolderResult result = null;
@@ -86,10 +104,6 @@ public class DropBoxCrawler {
                                     .listSharedLinksBuilder()
                                     .withPath(metadata.getPathLower()).withDirectOnly(true)
                                     .start();
-                            if (listSharedLinksResult.getLinks().toString().equals("[]")) {
-                                createLinkSharingFile(client, metadata.getPathLower());
-                            }
-                            System.out.println(listSharedLinksResult.getLinks());
                             String jsonTarget = listSharedLinksResult.getLinks().toString();
                             System.out.println(jsonTarget);
                             JSONArray jArray = new JSONArray(jsonTarget);
