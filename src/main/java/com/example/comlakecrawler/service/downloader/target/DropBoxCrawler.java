@@ -2,29 +2,32 @@ package com.example.comlakecrawler.service.downloader.target;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.DownloadErrorException;
-import com.dropbox.core.v2.files.GetMetadataErrorException;
-import com.dropbox.core.v2.files.ListFolderResult;
-import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.sharing.*;
 import com.dropbox.core.v2.users.FullAccount;
 import com.example.comlakecrawler.service.downloader.CrawlerInterface;
+import com.sun.istack.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DropBoxCrawler {
     private String topic;
     private CrawlerInterface listener;
     private DbxClientV2 client;
-    private static final String ACCESS_TOKEN = "FXWa9O4CfLQAAAAAAAAAAQEnQ6Yj7EypQile6xPuuog4LUunLsw2A-USbSGuycXw";
-    private ArrayList<String>sources;
+    private String urlSharingLink;
+    private static final String ACCESS_TOKEN = "U8PVVxEuP08AAAAAAAAAAdwJ-Xr57JjGbLqVAX9o92wR9s-RTGrGFu9O9sys1lO-";
+    private ArrayList<String> sources;
+
     public DropBoxCrawler() {
-        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/crawler_csv").build();
-        client = new DbxClientV2(config,ACCESS_TOKEN);
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/custom_crawler").build();
+        client = new DbxClientV2(config, ACCESS_TOKEN);
         try {
             FullAccount account = client.users().getCurrentAccount();
             System.out.println(account.getName().getDisplayName());
@@ -32,6 +35,25 @@ public class DropBoxCrawler {
             e.printStackTrace();
         }
         sources = new ArrayList<>();
+    }
+
+    public String getUrlSharingLink() {
+        return urlSharingLink;
+    }
+
+    public void setUrlSharingLink(String urlSharingLink) {
+        this.urlSharingLink = urlSharingLink;
+    }
+
+    private String nameOfSharingFolder(String url, DbxClientV2 client) {
+        SharedLinkMetadata sharedLinkMetadata = null;
+        try {
+            sharedLinkMetadata = client.sharing().
+                    getSharedLinkMetadata(url);
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+        return sharedLinkMetadata.getName();
     }
 
     public void setListener(CrawlerInterface listener) {
@@ -46,17 +68,23 @@ public class DropBoxCrawler {
         this.topic = topic;
     }
 
-    public void searchMachine(){
+    public void searchMachine() {
+        System.out.println("DO SEARCH");
         ListFolderResult result = null;
         try {
-            result = client.files().listFolder("");
+            result = client.files().listFolder("/" + nameOfSharingFolder(urlSharingLink, client));
             while (true) {
                 for (Metadata metadata : result.getEntries()) {
-//                System.out.println(metadata.getPathLower());
-                    if (metadata.getPathLower().contains(topic)){
-//                    download(client,metadata.getPathLower().replace("/",""),metadata);
-//                        System.out.println(metadata.getPathLower());
-                        sources.add("no_link:"+"dbx:"+metadata.getPathLower());
+                    if (metadata.getName().contains(topic)) {
+                        sharingBuilderResult(client,metadata.getPathLower());
+//                        System.out.println(metadata.getName());
+
+//                        String urlSharingFile = sharingBuilderResult(client,metadata.getPathLower());
+//                        String[]arg = urlSharingFile.split("/",-1);
+//                        for (int i = 0; i < arg.length; i++) {
+//                            System.out.print(arg[i]+" : ");
+//                        }
+//                        sources.add(urlSharingFile);
                     }
                 }
                 if (!result.getHasMore()) {
@@ -66,21 +94,38 @@ public class DropBoxCrawler {
             }
         } catch (DbxException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             saveLink();
         }
     }
-    public void download(String filename, String pathMetadata){
+
+    public void sharingBuilderResult(DbxClientV2 client,String path) {
+        ListSharedLinksResult listSharedLinksResult = null;
+        try {
+            listSharedLinksResult = client.sharing()
+                    .listSharedLinksBuilder()
+                    .withPath(path).withDirectOnly(true)
+                    .start();
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+        if (listSharedLinksResult.getLinks().toString().equals("[]")){
+            createLinkSharingFile(client,path);
+        }
+        System.out.println(listSharedLinksResult.getLinks());
+    }
+
+    public void download(String filename, String pathMetadata) {
         String path = "D:\\save\\sources";
         File file = new File(path, filename);
-        if (!file.exists()){
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(file);
             client.files().download(pathMetadata).download(outputStream);
-            System.out.println("METADATA"+  pathMetadata.toString());
+            System.out.println("METADATA" + pathMetadata.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -92,10 +137,65 @@ public class DropBoxCrawler {
         } catch (DbxException e) {
             e.printStackTrace();
         }
+
     }
-    private void saveLink(){
-        if (listener!=null){
-            listener.updateSources(topic,sources);
+
+    public void createLinkSharingFile(DbxClientV2 client, String pathLower) {
+        SharedLinkMetadata sharedLinkMetadata = null;
+        try {
+                sharedLinkMetadata = client.sharing().createSharedLinkWithSettings(pathLower);
+        } catch (CreateSharedLinkWithSettingsErrorException ex) {
+            System.out.println(ex);
+        } catch (DbxException ex) {
+            System.out.println(ex);
+        }
+        System.out.println(sharedLinkMetadata.getUrl());
+    }
+
+    public static List<HttpRequestor.Header> addAuthHeader(@Nullable List<HttpRequestor.Header> headers, String accessToken) {
+        if (accessToken == null) throw new NullPointerException("accessToken");
+        if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
+        headers.add(new HttpRequestor.Header("Authorization", "Bearer " + accessToken));
+        return headers;
+    }
+
+    private void saveLink() {
+        if (listener != null) {
+            listener.updateSources(topic, sources);
+        }
+    }
+
+    private void builderConfigurationForSharingMeta(DbxClientV2 client, String url) {
+        client.sharing().getSharedLinkFileBuilder(url);
+        client.sharing().getSharedLinkMetadataBuilder(url);
+    }
+
+    public void downloadSharingFileWithURl(String url) {
+        try {
+            SharedLinkMetadata sharedLinkMetadata = client.sharing().
+                    getSharedLinkMetadata(url);
+            String name = sharedLinkMetadata.getName();
+            String path = "D:\\save\\sources";
+            File file = new File(path, name);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            client.sharing().getSharedLinkFile(url).download(outputStream);
+        } catch (DbxException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void listSharedFolder(DbxClientV2 client) {
+        try {
+            ListFoldersResult result = client.sharing().listFolders();
+            for (SharedFolderMetadata sharedFolderMeta : result.getEntries()) {
+                System.out.println(sharedFolderMeta.getName());
+            }
+        } catch (DbxException e) {
+            e.printStackTrace();
         }
     }
 }

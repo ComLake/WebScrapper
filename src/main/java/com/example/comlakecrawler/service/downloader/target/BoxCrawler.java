@@ -116,6 +116,7 @@ public class BoxCrawler {
         }
         saveLink();
     }
+
     public void downloadFile(String id){
         BoxFile file = new BoxFile(api, id);
         BoxFile.Info info = file.getInfo();

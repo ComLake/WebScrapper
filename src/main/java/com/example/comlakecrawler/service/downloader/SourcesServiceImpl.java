@@ -44,7 +44,9 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
             dropBoxCrawler.setListener(this);
             dropBoxCrawler.setTopic(sourcesRegister.getTopic());
+            dropBoxCrawler.setUrlSharingLink("https://www.dropbox.com/sh/zq61dzurivl4p19/AAAWtTmFzGAo22fjP-YEMR_0a?dl=0");
             dropBoxCrawler.searchMachine();
+//            System.out.println(dropBoxCrawler.getUrlSharingLink());
         }
         if (sourcesRegister.isBox()){
             BoxCrawler boxCrawler = new BoxCrawler();
@@ -117,11 +119,10 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             String linkDownload = linkResources.getLink();
             String []arraySet = linkDownload.split(":",-1);
             boxCrawler.downloadFile(arraySet[2]);
-        }else if(linkResources.getLink().contains("dbx")){
+        }else if(linkResources.getLink().contains("dropbox.com")){
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
             String linkDbxDownload = linkResources.getLink();
-            String []arrayDbx = linkDbxDownload.split(":",-1);
-            dropBoxCrawler.download(arrayDbx[2].replace("/",""),arrayDbx[2]);
+            dropBoxCrawler.downloadSharingFileWithURl(linkDbxDownload);
         }
         else {
             throw new RuntimeException("This website haven't been supported");
@@ -171,13 +172,13 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
                 linkResources.setTopic(topic);
                 linkResources.setAuthor(arrayBox[5]);
                 linkResources.setName_dataset(arrayBox[3]);
-            }else if (link.contains("dbx")){
+            }else if (link.contains("dropbox.com")){
                 String[] arrayBox = link.split(":",-1);
                 linkResources.setWebsites("dropbox");
                 linkResources.setLink(link);
                 linkResources.setTopic(topic);
                 linkResources.setAuthor("");
-                linkResources.setName_dataset(arrayBox[2].replace("/",""));
+                linkResources.setName_dataset(arrayBox[1].replace("/",""));
             }
             this.sourcesRepository.save(linkResources);
         }
