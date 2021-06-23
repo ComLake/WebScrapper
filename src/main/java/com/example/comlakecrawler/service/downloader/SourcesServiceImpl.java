@@ -31,6 +31,7 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
 
     @Override
     public void addSomeSourcesLink(SourcesRegistration sourcesRegister) {
+        String linkSharedDropbox = sourcesRegister.getLinkSharedDbx();
         if (sourcesRegister.isGithub()){
             GithubCrawler githubSearchEngine = new GithubCrawler();
             githubSearchEngine.setListener(this);
@@ -47,9 +48,8 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
             dropBoxCrawler.setListener(this);
             dropBoxCrawler.setTopic(sourcesRegister.getTopic());
-            dropBoxCrawler.setUrlSharingLink(sourcesRegister.getLinkSharedDbx());
+            dropBoxCrawler.setUrlSharingLink(linkSharedDropbox);
             dropBoxCrawler.searchMachine();
-//            System.out.println(dropBoxCrawler.getUrlSharingLink());
         }
         if (sourcesRegister.isBox()){
             BoxCrawler boxCrawler = new BoxCrawler();

@@ -80,7 +80,26 @@ public class DropBoxCrawler {
             while (true) {
                 for (Metadata metadata : result.getEntries()) {
                     if (metadata.getName().contains(topic)) {
-                        sharingBuilderResult(client, metadata.getPathLower());
+                        ListSharedLinksResult listSharedLinksResult = null;
+                        try {
+                            listSharedLinksResult = client.sharing()
+                                    .listSharedLinksBuilder()
+                                    .withPath(metadata.getPathLower()).withDirectOnly(true)
+                                    .start();
+                            if (listSharedLinksResult.getLinks().toString().equals("[]")) {
+                                createLinkSharingFile(client, metadata.getPathLower());
+                            }
+                            System.out.println(listSharedLinksResult.getLinks());
+                            String jsonTarget = listSharedLinksResult.getLinks().toString();
+                            System.out.println(jsonTarget);
+                            JSONArray jArray = new JSONArray(jsonTarget);
+                            JSONObject jObject = jArray.getJSONObject(0);
+                            sources.add("[{\"url\":\""+jObject.get("url")+"\",\"name\":\""+jObject.get("name")+"\"}]"+":dbx");
+                        } catch (DbxException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 if (!result.getHasMore()) {
@@ -105,6 +124,7 @@ public class DropBoxCrawler {
             if (listSharedLinksResult.getLinks().toString().equals("[]")) {
                 createLinkSharingFile(client, path);
             }
+            System.out.println(listSharedLinksResult.getLinks());
             String jsonTarget = listSharedLinksResult.getLinks().toString();
             System.out.println(jsonTarget);
             JSONArray jArray = new JSONArray(jsonTarget);
