@@ -32,6 +32,7 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
     @Override
     public void addSomeSourcesLink(SourcesRegistration sourcesRegister) {
         String linkSharedDropbox = sourcesRegister.getLinkSharedDbx();
+        String linkSharedBox = sourcesRegister.getLinkSharedBox();
         if (!linkSharedDropbox.equals("")){
             DropBoxCrawler dropBoxCrawler1 = new DropBoxCrawler();
             dropBoxCrawler1.setUrlSharingLink(linkSharedDropbox);
@@ -60,7 +61,8 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             BoxCrawler boxCrawler = new BoxCrawler();
             boxCrawler.setListener(this);
             boxCrawler.setTopic(sourcesRegister.getTopic());
-            boxCrawler.searchForTopic();
+            boxCrawler.setUrlSharedFile(linkSharedBox);
+            boxCrawler.searchFileInURLSharing();
         }
     }
 
@@ -122,14 +124,13 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
             destiny.append(buffer);
             System.out.println("Downloading.. "+buffer + " to "+destiny);
             githubSearchEngine.download(link,destiny.toString());
-        }else if (linkResources.getLink().contains("boxnet")){
-//            BoxCrawler boxCrawler = new BoxCrawler();
-//            String linkDownload = linkResources.getLink();
-//            String []arraySet = linkDownload.split(":",-1);
-//            boxCrawler.downloadFile(arraySet[2]);
+        }else if (linkResources.getLink().contains("app.box")){
+            BoxCrawler boxCrawler = new BoxCrawler();
+            System.out.println("Download public box "+linkResources.getName_dataset());
+            boxCrawler.setUrlSharedFile(linkResources.getLink());
+            boxCrawler.downloadWithSharedLink(linkResources.getName_dataset());
         }else if(linkResources.getLink().contains("dropbox.com")){
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
-//            String linkDbxDownload = linkResources.getLink();
             dropBoxCrawler.downloadSharingFileWithURl(linkResources.getLink());
         }
         else {
@@ -173,13 +174,20 @@ public class SourcesServiceImpl implements SourcesService,CrawlerInterface{
                 linkResources.setTopic(topic);
                 linkResources.setAuthor(array[0]);
                 linkResources.setName_dataset(array[1]);
-            }else if(link.contains("boxnet")){
-                String[] arrayBox = link.split(":",-1);
-                linkResources.setWebsites(arrayBox[1]);
-                linkResources.setLink(link);
-                linkResources.setTopic(topic);
-                linkResources.setAuthor(arrayBox[5]);
-                linkResources.setName_dataset(arrayBox[3]);
+            }else if(link.contains("app.box")){
+                System.out.println(link);
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(link);
+                    JSONObject jsonObject = (JSONObject)jsonArray.get(0);
+                    linkResources.setWebsites("box");
+                    linkResources.setLink(jsonObject.get("url").toString());
+                    linkResources.setTopic(topic);
+                    linkResources.setAuthor("");
+                    linkResources.setName_dataset(jsonObject.get("name").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }else if (link.contains("dbx")){
                 try {
                     JSONArray jsonArray = new JSONArray(link);

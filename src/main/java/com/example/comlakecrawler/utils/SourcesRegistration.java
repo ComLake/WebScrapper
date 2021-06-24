@@ -6,6 +6,7 @@ public class SourcesRegistration {
     private boolean github;
     private boolean box;
     private boolean dropbox;
+    private boolean drive;
     private String linkSharedDbx;
     private String linkSharedBox;
     private String linkSharedDrive;
@@ -75,5 +76,13 @@ public class SourcesRegistration {
 
     public void setLinkSharedDrive(String linkSharedDrive) {
         this.linkSharedDrive = linkSharedDrive;
+    }
+
+    public boolean isDrive() {
+        return drive;
+    }
+
+    public void setDrive(boolean drive) {
+        this.drive = drive;
     }
 }
