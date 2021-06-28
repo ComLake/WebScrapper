@@ -32,7 +32,7 @@ public class BoxCrawler {
         isExit = false;
         IAccessTokenCache accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_ENTRIES);
         try {
-            Reader reader = new FileReader("src/main/resources/static/box_com/config.json");
+            Reader reader = new FileReader("src/main/resources/static/lib/credentials.json");
             BoxConfig config = BoxConfig.readFrom(reader);
             api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID,
                     config,
