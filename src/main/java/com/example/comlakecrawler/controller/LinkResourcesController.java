@@ -1,5 +1,6 @@
 package com.example.comlakecrawler.controller;
 
+import com.example.comlakecrawler.repository.SourcesRepository;
 import com.example.comlakecrawler.service.downloader.SourcesService;
 import com.example.comlakecrawler.utils.LinkResources;
 import com.example.comlakecrawler.utils.SourcesRegistration;
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class LinkResourcesController {
@@ -35,4 +39,12 @@ public class LinkResourcesController {
         sourcesService.downloadSources(id);
         return "redirect:/result";
     }
+    @RestController
+    public class SourcesRestSearchController {
+        @GetMapping("/results")
+        public List<LinkResources> findAllWithSearch(@RequestParam Optional<String> name){
+            return sourcesService.findByName(name.orElse("_"));
+        }
+    }
+
 }

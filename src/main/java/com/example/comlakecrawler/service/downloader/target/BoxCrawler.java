@@ -32,7 +32,7 @@ public class BoxCrawler {
         isExit = false;
         IAccessTokenCache accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_ENTRIES);
         try {
-            Reader reader = new FileReader("src/main/resources/static/lib/credentials.json");
+            Reader reader = new FileReader("src/main/resources/static/lib/config.json");
             BoxConfig config = BoxConfig.readFrom(reader);
             api = BoxDeveloperEditionAPIConnection.getAppUserConnection(USER_ID,
                     config,
@@ -99,7 +99,7 @@ public class BoxCrawler {
             @Override
             public void run() {
                 while (!isExit) {
-                    File file = new File(path + fileName);
+                    File file = new File(path + "box_"+fileName);
                     if (!file.exists()) {
                         file.getParentFile().mkdirs();
                         try {

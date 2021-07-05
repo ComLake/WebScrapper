@@ -2,6 +2,7 @@ package com.example.comlakecrawler.service.downloader.target;
 
 import com.box.sdk.*;
 import com.example.comlakecrawler.service.downloader.CrawlerInterface;
+import com.example.comlakecrawler.service.downloader.SourcesService;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -17,6 +18,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.Permission;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -38,8 +40,29 @@ public class DriveCrawler {
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
     private static final String CREDENTIALS_FILE_PATH = "src/main/resources/static/lib/credentials.json";
+    private ArrayList<String>sources;
     private String urlEmbedded;
+    private CrawlerInterface listener;
     private Drive service;
+    private String keySeek;
+
+    public DriveCrawler() {
+        sources = new ArrayList<>();
+        setUp();
+    }
+
+    public void setListener(CrawlerInterface listener) {
+        this.listener = listener;
+    }
+
+    public String getKeySeek() {
+        return keySeek;
+    }
+
+    public void setKeySeek(String keySeek) {
+        this.keySeek = keySeek;
+    }
+
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         InputStream in = new FileInputStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
@@ -53,33 +76,19 @@ public class DriveCrawler {
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
-
-    public void setUp() {
+    private void setUp() {
         System.out.println("GOOGLE DRIVE API LAUNCH");
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT)).
                     setApplicationName(APPLICATION_NAME).build();
-            List<File> googleRootFolders = getFileByQuery("1TEh_c0m1g4fNGpcFP201B1ZNKmC7-fkp");
-            for (File folder : googleRootFolders) {
-                System.out.println("FolderID: " + folder.getId() + " Name: " + folder.getName());
-            }
-            System.out.println("Enter file you wanna download");
-            String seekKey = (new Scanner(System.in)).next();
-            for (File file:googleRootFolders) {
-                if (file.getName().contains(seekKey)){
-                    download(file.getId(),file.getName(),service);
-                }
-            }
-            System.out.println("download process finished");
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public void list() {
+    private void list() {
         FileList result = null;
         try {
             result = service.files().list().setPageSize(10).setFields("nextPageToken, files(id, name)").execute();
@@ -97,10 +106,10 @@ public class DriveCrawler {
         }
     }
 
-    public List<File> getSubFolderByQuery(String googleFolderIdParent) {
+    private List<File> getSubFolderByQuery(String googleFolderIdParent, List<File>list) {
         Drive driveService = service;
         String pageToken = null;
-        List<File> list = new ArrayList<>();
+        list = new ArrayList<>();
         String query = null;
         if (googleFolderIdParent == null) {
             query = " mimeType = 'application/vnd.google-apps.folder' "
@@ -126,10 +135,10 @@ public class DriveCrawler {
         return list;
     }
 
-    public List<File> getFileByQuery(String googleFolderIdParent) {
+    private List<File> getFileByQuery(String googleFolderIdParent,List<File>list) {
         Drive driveService = service;
         String pageToken = null;
-        List<File> list = new ArrayList<>();
+        list = new ArrayList<>();
         String query = null;
         if (googleFolderIdParent == null) {
             query = " mimeType != 'application/vnd.google-apps.folder' "
@@ -154,9 +163,9 @@ public class DriveCrawler {
         }while (pageToken != null);
         return list;
     }
-    public void download(String fileId, String fileName, Drive service){
+    public void download(String fileId, String fileName){
         try {
-            OutputStream outputStream = new FileOutputStream(new java.io.File(path+fileName));
+            OutputStream outputStream = new FileOutputStream(new java.io.File(path+"ggdrive_"+fileName));
             service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -164,13 +173,37 @@ public class DriveCrawler {
             e.printStackTrace();
         }
     }
-
+    private Permission createPublicPermission(String idFile) throws IOException {
+        String permissionType = "anyone";
+        String permissionRole = "reader";
+        Permission newPermission = new Permission();
+        newPermission.setType(permissionType);
+        newPermission.setRole(permissionRole);
+        return service.permissions().create(idFile,newPermission).execute();
+    }
+    public void search(){
+        System.out.println("SEARCH");
+        String []arrEmbedded = urlEmbedded.split("/",-1);
+        String embeddedLink = arrEmbedded[arrEmbedded.length-1];
+        List<File>files = new ArrayList<>();
+        if (getFileByQuery(embeddedLink,files)==null||getFileByQuery(embeddedLink,files).isEmpty()){
+            files = getSubFolderByQuery(embeddedLink,files);
+        }else {
+            files = getFileByQuery(embeddedLink,files);
+        }
+        for (File file:files) {
+            if (file.getName().contains(keySeek)){
+                sources.add("[{\"id\":\"" + file.getId() + "\",\"url\":\""+urlEmbedded+ "\",\"name\":\"" + file.getName() +"\",\"website\":\""+"googledrive" +"\"}]");
+            }
+        }
+        saveLink();
+    }
     public void setUrlEmbedded(String urlEmbedded) {
         this.urlEmbedded = urlEmbedded;
     }
-
-    public String getUrlEmbedded() {
-        String []arrEmbedded = urlEmbedded.split("/",-1);
-        return arrEmbedded[arrEmbedded.length-1];
+    private void saveLink(){
+        if (listener!=null){
+            listener.updateSources(keySeek,sources);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.comlakecrawler.service.config;
 
 public class Annotation {
+    public static String ULAKE_LOGOUT = "http://localhost:5000/api/auth/logout";
     public static String ULAKE_REGISTER = "http://localhost:5000/api/auth/signup";
     public static String ULAKE_UPLOAD_FILE = "http://localhost:5000/api/files";
     public static String ULAKE_REFRESH_TOKEN = "http://localhost:5000/api/auth/refresh-token";

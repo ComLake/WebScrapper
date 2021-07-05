@@ -174,14 +174,14 @@
       <div></div>
     </div>
     <div class="tabs">
-      <form id="login_box" method="post">
+      <form id="login_box" th:action="@{/login_check}" th:object="${user}" method="POST">
         <div class="inputs">
           <div class="input">
-            <input type="text" name="" placeholder="Username">
+            <input type="text" th:field="*{username}" name="" placeholder="Username">
             <img src="images/user-account-box.png">
           </div>
           <div class="input">
-            <input type="text" name="" placeholder="Password">
+            <input type="text" th:field="*{password}" name="" placeholder="Password">
             <img src="images/padlock.png">
           </div>
           <label class="checkbox">
@@ -189,20 +189,20 @@
             <span>Remember me</span>
           </label>
         </div>
-        <button class="box-button">Login</button>
+        <button class="box-button" onclick="this.closest('form').submit();return false;">Login</button>
       </form>
-      <form id="register_box" th:action="@{/register}" method="post" th:object="${user}">
+      <form id="register_box" th:action="@{/register_direct}" th:object="${user}" method="POST" >
         <div class="inputs">
           <div class="input">
-            <input type="text" name="" placeholder="Email" th:field="*{email}">
+            <input type="text" name="" th:field="*{email}" placeholder="Email" >
             <img src="images/email.png">
           </div>
           <div class="input">
-            <input type="text" name="" placeholder="Username" th:field="*{username}">
+            <input type="text" name="" th:field="*{username}"placeholder="Username" >
             <img src="images/user-account-box.png">
           </div>
           <div class="input">
-            <input type="text" name="" placeholder="Password" th:field="*{password}">
+            <input type="text" name="" th:field="*{password}" placeholder="Password">
             <img src="images/padlock.png">
           </div>
           <label class="checkbox">
@@ -210,7 +210,7 @@
             <span>I agree to the term & condition</span>
           </label>
         </div>
-        <button class="box-button">Register</button>
+        <button class="box-button" onclick="this.closest('form').submit();return false;">Register</button>
       </form>
     </div>
   </div>

@@ -211,7 +211,7 @@ public class DropBoxCrawler {
             SharedLinkMetadata sharedLinkMetadata = client.sharing().
                     getSharedLinkMetadata(url);
             String name = sharedLinkMetadata.getName();
-            File file = new File(path, name);
+            File file = new File(path, "dropbox_"+name);
             FileOutputStream outputStream = new FileOutputStream(file);
             client.sharing().getSharedLinkFile(url).download(outputStream);
         } catch (DbxException e) {

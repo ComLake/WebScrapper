@@ -17,8 +17,8 @@ public class LinkResources {
     private String link;
     @Column(name = "author")
     private String author;
-    @Column(name = "name_dataset")
-    private String name_dataset;
+    @Column(name = "name")
+    private String name;
     public LinkResources() {
     }
 
@@ -63,10 +63,10 @@ public class LinkResources {
     }
 
     public String getName_dataset() {
-        return name_dataset;
+        return name;
     }
 
-    public void setName_dataset(String name_dataset) {
-        this.name_dataset = name_dataset;
+    public void setName_dataset(String name) {
+        this.name = name;
     }
 }

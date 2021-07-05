@@ -1,15 +1,21 @@
 package com.example.comlakecrawler.controller;
 
+import com.example.comlakecrawler.service.authentication.UserServices;
 import com.example.comlakecrawler.utils.LinkResources;
 import com.example.comlakecrawler.utils.SourcesRegistration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AppController {
+    @Autowired
+    UserServices userServices;
+
     @GetMapping(value = "")
-    public String viewHomePage() {
+    public String viewHomePage(Model model) {
+        model.addAttribute("user",userServices.getCurrentUser());
         return "homepage";
     }
 }

@@ -1,5 +1,6 @@
 package com.example.comlakecrawler;
 
+import com.example.comlakecrawler.service.authentication.AuthenticateComLake;
 import com.example.comlakecrawler.service.downloader.target.DriveCrawler;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,7 +11,6 @@ public class ComlakecrawlerApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ComlakecrawlerApplication.class, args);
-		new DriveCrawler().setUp();
 	}
 
 	@Override
