@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +43,24 @@ public class LinkResourcesController {
     @RestController
     public class SourcesRestSearchController {
         @GetMapping("/results")
-        public List<LinkResources> findAllWithSearch(@RequestParam Optional<String> name){
-            return sourcesService.findByName(name.orElse("_"));
+        public List<LinkResources> findAllWithSearch(@RequestParam Optional<String> name,@RequestParam Optional<Integer>pageNumber){
+            List<LinkResources>overallResults = sourcesService.findByName(name.orElse("_"));
+            List<ArrayList<LinkResources>>theBigPage = new ArrayList<>();
+            int i = 0;
+            int count = 0;
+            ArrayList<LinkResources>theSmallerOne = new ArrayList<>();
+            do {
+                if(count<6){
+                     count++;
+                }else {
+                    count = 0;
+                    theBigPage.add(theSmallerOne);
+                    theSmallerOne = new ArrayList<>();
+                }
+                theSmallerOne.add(overallResults.get(i));
+                i++;
+            }while (i<overallResults.size());
+            return theBigPage.get(pageNumber.orElse(0));
         }
     }
 
