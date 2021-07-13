@@ -5,6 +5,7 @@ import com.example.comlakecrawler.service.downloader.SourcesService;
 import com.example.comlakecrawler.utils.LinkResources;
 import com.example.comlakecrawler.utils.SourcesRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,24 +44,10 @@ public class LinkResourcesController {
 //    @RestController
 //    public class SourcesRestSearchController {
         @GetMapping("/results")
-        public String sortAllWithSearch(Model model,@RequestParam Optional<String> name,@RequestParam Optional<Integer>pageNumber){
-            List<LinkResources>overallResults = sourcesService.findByName(name.orElse("_"));
-            List<ArrayList<LinkResources>>theBigPage = new ArrayList<>();
-            int i = 0;
-            int count = 0;
-            ArrayList<LinkResources>theSmallerOne = new ArrayList<>();
-            do {
-                if(count<6){
-                     count++;
-                }else {
-                    count = 0;
-                    theBigPage.add(theSmallerOne);
-                    theSmallerOne = new ArrayList<>();
-                }
-                theSmallerOne.add(overallResults.get(i));
-                i++;
-            }while (i<overallResults.size());
-            model.addAttribute("listSources",theBigPage.get(pageNumber.orElse(0)));
+        public String sortAllWithSearch(Model model, @Param("keyword") String keyword, @RequestParam Optional<Integer>pageNumber){
+            List<LinkResources>overallResults = sourcesService.findByName(keyword);
+            model.addAttribute("listSources",overallResults);
+            model.addAttribute("keyword",keyword);
             return "storage";
         }
 //    }
