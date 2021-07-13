@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
+    <link rel="stylesheet"href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta charset="UTF-8">
     <title>Crawler Center | Storage</title>
     <style>
@@ -71,6 +73,43 @@
       }
       footer{
       margin-left: 20px;
+      }
+      .boxContainer{
+      margin:auto;
+      margin-top:15%;
+      margin-bottom:5%;
+      position: relative;
+      width: 300px;
+      height: 42px;
+      border: 4px solid #2980b9;
+      padding: 0px 10px;
+      border-radius: 50px;
+      }
+      .elementsContainer
+      {
+        width: 100%;
+        height: 100%;
+        vertical-align: middle;
+      }
+      .search{
+      border: none;
+      height: 100%;
+      width: 100%;
+      padding: 0px 5px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-family: "Nunito";
+      color: #424242;
+      font-weight: 500;
+      }
+      .search:focus
+      {
+      outline: none;
+      }
+      .material-icons{
+      font-size: 25;
+      color: #2980b9;
+
       }
         .table{
         width: 100%;
@@ -310,6 +349,18 @@
         <div class="logout">
             <img id="logout" src="images/user.png" class="user">
         </div>
+        <div class="boxContainer">
+            <table class="elementsContainer">
+                <tr>
+                    <td>
+                        <input type="text"placeholder="Search" class="search">
+                    </td>
+                    <td>
+                        <a href='javascript:insertParam(key, value)' ><i class="fas fa-search">search</i> </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div align="center" class="table-container">
             <table class="table">
                 <thead>
@@ -373,6 +424,33 @@
     function(){
         document.querySelector('.bg-modal').style.display = 'none';
     });
+    function insertParam(key, value) {
+    key = encodeURIComponent(key);
+    value = encodeURIComponent(value);
+
+    // kvp looks like ['key1=value1', 'key2=value2', ...]
+    var kvp = document.location.search.substr(1).split('&');
+    let i=0;
+
+    for(; i<kvp.length; i++){
+        if (kvp[i].startsWith(key + '=')) {
+            let pair = kvp[i].split('=');
+            pair[1] = value;
+            kvp[i] = pair.join('=');
+            break;
+        }
+    }
+
+    if(i >= kvp.length){
+        kvp[kvp.length] = [key,value].join('=');
+    }
+
+    // can return this or...
+    let params = kvp.join('&');
+
+    // reload page with new params
+    document.location.search = params;
+}
 </script>
 </body>
 </html>

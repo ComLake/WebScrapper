@@ -12,6 +12,8 @@ import java.util.List;
 
 @Repository
 public interface SourcesRepository extends JpaRepository<LinkResources,Long> {
-    @Query("select s from LinkResources s where name like %?1%")
+    @Query("select s from LinkResources s where topic like %?1%" +
+            "or websites like %?1%" +
+            "or name like %?1%")
     List<LinkResources> findByName(String name);
 }

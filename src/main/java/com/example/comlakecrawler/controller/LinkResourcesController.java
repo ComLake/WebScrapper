@@ -40,10 +40,10 @@ public class LinkResourcesController {
         sourcesService.downloadSources(id);
         return "redirect:/result";
     }
-    @RestController
-    public class SourcesRestSearchController {
+//    @RestController
+//    public class SourcesRestSearchController {
         @GetMapping("/results")
-        public List<LinkResources> findAllWithSearch(@RequestParam Optional<String> name,@RequestParam Optional<Integer>pageNumber){
+        public String sortAllWithSearch(Model model,@RequestParam Optional<String> name,@RequestParam Optional<Integer>pageNumber){
             List<LinkResources>overallResults = sourcesService.findByName(name.orElse("_"));
             List<ArrayList<LinkResources>>theBigPage = new ArrayList<>();
             int i = 0;
@@ -60,8 +60,9 @@ public class LinkResourcesController {
                 theSmallerOne.add(overallResults.get(i));
                 i++;
             }while (i<overallResults.size());
-            return theBigPage.get(pageNumber.orElse(0));
+            model.addAttribute("listSources",theBigPage.get(pageNumber.orElse(0)));
+            return "storage";
         }
-    }
+//    }
 
 }
