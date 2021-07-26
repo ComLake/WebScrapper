@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
-    <link rel="stylesheet"href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta charset="UTF-8">
     <title>Crawler Center | Storage</title>
     <style>
@@ -70,9 +70,6 @@
       header a:hover{
       color: #cccccc;
       font-weight:bold;
-      }
-      footer{
-      margin-left: 20px;
       }
       .boxContainer{
       margin:auto;
@@ -312,7 +309,7 @@
       .photo{
       height: 100%;
       width: 100%;
-      background: url(images/flower.jpg);
+      background: url(/images/flower.jpg);
       position: absolute;
       bottom: 0;
       background-size: 100% 100%;
@@ -325,27 +322,35 @@
       background-position: 0 -25px;
       border-radius: 50%;
       }
+      footer{
+      padding: 20px;
+      margin-top: 20px;
+      color: #fff;
+      background-color: #263238;
+      text-align: center;
+      }
+
     </style>
 </head>
 <body>
 <div class="loader">
-    <img src="images/octopus.gif" alt="Loading..">
+    <img src="/images/octopus.gif" alt="Loading..">
 </div>
 <header>
     <div class="container">
         <div id="branding">
-            <img src="images/logo_fish.png" class="logo">
+            <img src="/images/fish.png" class="logo">
         </div>
         <nav>
             <ul>
                 <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/search}">Crawler Center</a> </li>
-                <li class="current"><a th:href="@{/result}">Upload Via Comlake API</a> </li>
-                <li><a href="">About</a> </li>
+                <li><a th:href="@{/search}">Crawler Center</a></li>
+                <li class="current"><a th:href="@{/result}">Upload Via Comlake API</a></li>
+                <li><a href="">About</a></li>
             </ul>
         </nav>
         <div class="logout">
-            <img id="logout" src="images/user.png" class="user">
+            <img id="logout" src="/images/user.png" class="user">
         </div>
         <div class="boxContainer">
             <form th:action="@{/results}">
@@ -381,6 +386,50 @@
                 </tbody>
             </table>
         </div>
+        <div>&nbsp;</div>
+        <div>
+            Result : [[${totalItems}]] - Page [[${currentPage}]] of [[${totalPages}]]
+            &nbsp; - &nbsp;
+            <a th:if="${currentPage > 1}" th:href="@{/result/1}">First</a>
+            <span th:unless="${currentPage > 1}">First</span>&nbsp;&nbsp;
+            <a th:if="${currentPage > 1}" th:href="@{'/result/' + ${currentPage - 1}}">Previous</a>
+            <span th:unless="${currentPage > 1}">Previous</span>&nbsp;&nbsp;
+            <th:block th:if="${totalPages <= 10}">
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${i != currentPage}" th:href="@{'/result/' + ${i}}">[[${i}]]</a> &nbsp; &nbsp;
+                <span th:unless="${i != currentPage}">[[${i}]]</span>
+                &nbsp;&nbsp;
+            </span>
+            </th:block>
+            <th:block th:if="${totalPages > 10}">
+                <th:block th:if="${currentPage <= 5 || currentPage > totalPages - 4}">
+                <span th:each="i: ${#numbers.sequence(1, 5)}">
+                <a th:if="${i != currentPage}" th:href="@{'/result/' + ${i}}">[[${i}]]</a> &nbsp; &nbsp;
+                <span th:unless="${i != currentPage}">[[${i}]]</span>
+                &nbsp;&nbsp;
+            </span>
+                    <a th:if="${i != currentPage}" th:href="@{'/result/' + 6}">...</a> &nbsp; &nbsp;
+                    <span th:each="i: ${#numbers.sequence(totalPages - 4, totalPages)}">
+                <a th:if="${i != currentPage}" th:href="@{'/result/' + ${i}}">[[${i}]]</a> &nbsp; &nbsp;
+                <span th:unless="${i != currentPage}">[[${i}]]</span>
+                &nbsp;&nbsp;
+            </span>
+                </th:block>
+                <th:block th:if="${currentPage > 5 && currentPage < totalPages - 4}">
+                    <a th:if="${i != currentPage}" th:href="@{'/result/' + ${currentPage - 5}}">...</a> &nbsp; &nbsp;
+                    <span th:each="i: ${#numbers.sequence(currentPage - 4, currentPage + 4)}">
+                <a th:if="${i != currentPage}" th:href="@{'/result/' + ${i}}">[[${i}]]</a> &nbsp; &nbsp;
+                <span th:unless="${i != currentPage}">[[${i}]]</span>
+                &nbsp;&nbsp;
+                        </span>
+                    <a th:if="${i != currentPage}" th:href="@{'/result/' + ${currentPage + 5}}">...</a> &nbsp; &nbsp;
+                </th:block>
+            </th:block>
+            <a th:if="${currentPage < totalPages}" th:href="@{'/result/'+${currentPage + 1}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>&nbsp;&nbsp;
+            <a th:if="${currentPage < totalPages}" th:href="@{'/result/'+${totalPages}}">Last</a>
+            <span th:unless="${currentPage < totalPages}">Last</span>&nbsp;&nbsp;
+        </div>
     </div>
 </header>
 <section id="showcase">
@@ -402,7 +451,7 @@
         </div>
     </div>
 </section>
-
+<footer>Crawler Web Design, Copying &copy; 2021</footer>
 <script type="text/javascript">
     window.addEventListener("load", function () {
         const loader = document.querySelector(".loader");
@@ -447,6 +496,7 @@
     function clearFilter(){
         window.location = '/result';
     }
+
 </script>
 </body>
 </html>

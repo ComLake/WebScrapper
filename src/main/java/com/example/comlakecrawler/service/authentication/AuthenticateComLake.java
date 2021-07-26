@@ -161,7 +161,7 @@ public class AuthenticateComLake {
             listener.infoUpdate(token,refreshToken,username,email,roles);
         }
     }
-    public void logout(){
+    public void  logout(){
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

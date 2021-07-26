@@ -8,7 +8,7 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 public interface SourcesService {
-    List<LinkResources>getAllResources();
+    Page<LinkResources>getAllResources(int pageNumber);
     void addSomeSourcesLink(SourcesRegistration sourcesRegister);
     LinkResources getLinksById(long id);
     void downloadSources(long id);

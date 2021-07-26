@@ -10,10 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +29,9 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
     private SourcesRepository sourcesRepository;
 
     @Override
-    public List<LinkResources> getAllResources() {
-        return sourcesRepository.findAll();
+    public Page<LinkResources> getAllResources(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber -1 ,10);
+        return sourcesRepository.findAll(pageable);
     }
 
     @Override
