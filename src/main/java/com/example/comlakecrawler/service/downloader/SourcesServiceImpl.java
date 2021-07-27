@@ -156,8 +156,9 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
     }
 
     @Override
-    public List<LinkResources> findByName(String name) {
-        return sourcesRepository.findByName(name);
+    public Page<LinkResources> findByName(String name, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber -1 ,10);
+        return sourcesRepository.findByName(name,pageable);
     }
 
     @Override
