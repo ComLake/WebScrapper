@@ -370,18 +370,15 @@
 </div>
 <div class="bg-modal">
     <div class="modal-content">
-        <div class="info">
-            <div class="name">
-                <!--                    <span th:text="${user.username}"></span>-->
-                Chill cùng tôi
+        <div class="info" th:object="${user}">
+            <div class="name" th:text="${user.username}">
             </div>
-            <div class="prof">(Số 8)</div>
-            <div class="divider"></div>
-            <div class="bio">
-                <span></span>
-                Là tên hề nhưng anh chưa từng khiến em cười vì anh lần nào :)))
+            <div class="prof" th:text="${user.email}">(Số 8)</div>
+            <div class="divider" th:text="${user.roles}"></div>
+            <div class="bio" >
+                <span th:text="${user.roles}"></span>
             </div>
-            <button class="btn-logout" th:onclick="|window.location.href='/login'|">Log out</button>
+            <button class="btn-logout" th:onclick="|window.location.href='/login'|" >Log out</button>
             <button class="btn-cancel">Cancel</button>
         </div>
         <div class="photo"></div>

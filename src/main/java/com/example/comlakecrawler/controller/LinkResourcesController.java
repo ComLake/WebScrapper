@@ -1,8 +1,10 @@
 package com.example.comlakecrawler.controller;
 
+import com.example.comlakecrawler.service.authentication.UserServices;
 import com.example.comlakecrawler.service.downloader.SourcesService;
 import com.example.comlakecrawler.utils.LinkResources;
 import com.example.comlakecrawler.utils.SourcesRegistration;
+import com.example.comlakecrawler.utils.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,9 @@ public class LinkResourcesController {
     @Autowired
     private SourcesService sourcesService;
 
+    @Autowired
+    private UserServices userServices;
+
     @GetMapping("/result")
     public String presentingListResult(Model model) {
         int currentPage = 1;
@@ -26,6 +31,13 @@ public class LinkResourcesController {
         model.addAttribute("totalItems", totalItems);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("listSources", page.getContent());
+        if (userServices.getCurrentUser()==null){
+            UserAccount userAccount = new UserAccount();
+            model.addAttribute("user",userAccount);
+        }else {
+            UserAccount userAccount = userServices.getCurrentUser();
+            model.addAttribute("user",userAccount);
+        }
         return "storage";
     }
 
@@ -38,6 +50,13 @@ public class LinkResourcesController {
         model.addAttribute("totalItems", totalItems);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("listSources", page.getContent());
+        if (userServices.getCurrentUser()==null){
+            UserAccount userAccount = new UserAccount();
+            model.addAttribute("user",userAccount);
+        }else {
+            UserAccount userAccount = userServices.getCurrentUser();
+            model.addAttribute("user",userAccount);
+        }
         return "storage";
     }
 
@@ -45,6 +64,13 @@ public class LinkResourcesController {
     public String showCrawlerCenter(Model model) {
         SourcesRegistration sourcesRegister = new SourcesRegistration();
         model.addAttribute("sourcesRegister", sourcesRegister);
+        if (userServices.getCurrentUser()==null){
+            UserAccount userAccount = new UserAccount();
+            model.addAttribute("user",userAccount);
+        }else {
+            UserAccount userAccount = userServices.getCurrentUser();
+            model.addAttribute("user",userAccount);
+        }
         return "search";
     }
 
@@ -71,6 +97,13 @@ public class LinkResourcesController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("listSources", page.getContent());
         model.addAttribute("keyword", keyword);
+        if (userServices.getCurrentUser()==null){
+            UserAccount userAccount = new UserAccount();
+            model.addAttribute("user",userAccount);
+        }else {
+            UserAccount userAccount = userServices.getCurrentUser();
+            model.addAttribute("user",userAccount);
+        }
         return "searching_storage";
     }
     @GetMapping("/results/pages")
@@ -83,6 +116,13 @@ public class LinkResourcesController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("listSources", page.getContent());
         model.addAttribute("keyword", keyword);
+        if (userServices.getCurrentUser()==null){
+            UserAccount userAccount = new UserAccount();
+            model.addAttribute("user",userAccount);
+        }else {
+            UserAccount userAccount = userServices.getCurrentUser();
+            model.addAttribute("user",userAccount);
+        }
         return "searching_storage";
     }
 

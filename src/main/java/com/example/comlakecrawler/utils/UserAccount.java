@@ -3,13 +3,24 @@ package com.example.comlakecrawler.utils;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
+@Table(name = "user_crawler")
 public class UserAccount {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
+    private long id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "email")
     private String email;
+    @Column(name = "refreshToken")
     private String refreshToken;
+    @Column(name="token")
     private String token;
+    @Column(name = "password")
     private String password;
+    @Column(name="roles")
     private String roles;
 
     public UserAccount() {

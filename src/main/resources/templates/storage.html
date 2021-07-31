@@ -148,6 +148,21 @@
         font-size: 14px;
         opacity: 1;
         }
+        .table tbody tr td .upload{
+        width: 100px;
+        text-decoration: none;
+        line-height: 35px;
+        display: inline-block;
+        background-color: #FF1046;
+        font-weight: medium;
+        color: #FFFFFF;
+        text-align: center;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+        font-size: 14px;
+        opacity: 1;
+        }
         .loader{
         position: fixed;
         z-index: 99;
@@ -367,7 +382,8 @@
                     <th>Website</th>
                     <th>Author</th>
                     <th>Dataset</th>
-                    <th>#</th>
+                    <th>Upload Links</th>
+                    <th>Download Links</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -376,9 +392,15 @@
                     <td th:text="${sources.websites}"></td>
                     <td th:text="${sources.author}"></td>
                     <td th:text="${sources.name_dataset}"></td>
-                    <td data-label="#">
-                        <div id="link">
-                            <a href='javascript:down_fun()' th:href="@{/showSourcesForUpdate/{id}(id=${sources.id})}"
+                    <td data-label="upload links">
+                        <div id="link_upload">
+                            <a th:href="@{/showSourcesForUpdate/{id}(id=${sources.id})}"
+                               class="upload" id="upload">Upload</a>
+                        </div>
+                    </td>
+                    <td data-label="download links">
+                        <div id="link_download">
+                            <a th:href="@{/showSourcesForUpdate/{id}(id=${sources.id})}"
                                class="download" id="download">Download</a>
                         </div>
                     </td>
@@ -435,16 +457,15 @@
 <section id="showcase">
     <div class="bg-modal">
         <div class="modal-content">
-            <div class="info">
-                <div class="name">Thiet Nguyen</div>
-                <div class="prof">Java Coder</div>
-                <div class="divider"></div>
-                <div class="bio">
-                    Email: fillaytion23@gmail.com
-                    User
-                    Active : ON
+            <div class="info" th:object="${user}">
+                <div class="name" th:text="${user.username}">
                 </div>
-                <button class="btn-logout">Log out</button>
+                <div class="prof" th:text="${user.email}">(Số 8)</div>
+                <div class="divider" th:text="${user.roles}"></div>
+                <div class="bio" >
+                    <span th:text="${user.roles}"></span>
+                </div>
+                <button class="btn-logout" th:onclick="|window.location.href='/login'|" >Log out</button>
                 <button class="btn-cancel">Cancel</button>
             </div>
             <div class="photo"></div>

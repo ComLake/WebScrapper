@@ -65,6 +65,9 @@ public class AuthenticateComLake {
                                 "  \"lastname\": \"string\",\n" +
                                 "  \"department\": \"string\",\n" +
                                 "  \"affiliation\": \"string\",\n" +
+                                "  \"role\": [\n" +
+                                "    \"string\"\n" +
+                                "  ],\n" +
                                 "  \"password\": \""+passwords+"\"\n" +
                                 "}";
                         try (OutputStream outputStream = urlConnection.getOutputStream()) {
@@ -92,6 +95,7 @@ public class AuthenticateComLake {
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
+                        saveInfo();
                         isExit = true;
                     }
                 }
@@ -233,9 +237,7 @@ public class AuthenticateComLake {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } finally {
-                        if (listener!=null){
-                            listener.infoUpdate(token,refreshToken,username,email,roles);
-                        }
+                        saveInfo();
                         isExit = true;
                     }
                 }

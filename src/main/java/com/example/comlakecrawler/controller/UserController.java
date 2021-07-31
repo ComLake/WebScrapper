@@ -15,7 +15,6 @@ public class UserController {
     private UserServices userServices;
     @GetMapping(value = "/login")
     public String gotoLogin(Model model){
-        userServices.logout();
         UserAccount userAccount = new UserAccount();
         model.addAttribute("user",userAccount);
         return "login";
@@ -23,11 +22,11 @@ public class UserController {
     @PostMapping("/register_direct")
     public String createNewAccount(@ModelAttribute("user")UserAccount user){
         userServices.addUser(user);
-        return "homepage";
+        return "redirect:/login";
     }
     @PostMapping("/login_check")
     public String checkLoginExits(@ModelAttribute("user")UserAccount user){
         userServices.signIn(user);
-        return "homepage";
+        return "redirect:/";
     }
 }

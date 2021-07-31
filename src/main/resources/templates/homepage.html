@@ -289,9 +289,9 @@
                 <div class="name" th:text="${user.username}">
                 </div>
                 <div class="prof" th:text="${user.email}">(Số 8)</div>
-                <div class="divider" th:text="${user.token}"></div>
+                <div class="divider" th:text="${user.roles}"></div>
                 <div class="bio" >
-                    <span th:text="${user.token}"></span>
+                    <span th:text="${user.roles}"></span>
                 </div>
                 <button class="btn-logout" th:onclick="|window.location.href='/login'|" >Log out</button>
                 <button class="btn-cancel">Cancel</button>
