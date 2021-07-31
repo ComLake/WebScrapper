@@ -146,6 +146,7 @@ public class BoxCrawler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }finally {
+                        report(path + "box_"+fileName,urlSharedFile);
                         isExit = true;
                     }
                 }
@@ -222,7 +223,11 @@ public class BoxCrawler {
         boxSearchParam.setOwnerUserIds(ownerUserIds);
         crawlerSearchResult(boxSearchParam, boxSearch);
     }
-
+    private void report(String file,String sources) {
+        if (listener != null) {
+            listener.storageReport(file, sources);
+        }
+    }
     private void saveLink() {
         if (listener != null) {
             listener.updateSources(topic, sources);

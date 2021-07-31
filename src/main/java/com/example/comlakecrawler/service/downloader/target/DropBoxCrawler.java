@@ -200,7 +200,11 @@ public class DropBoxCrawler {
             listener.updateSources(topic, sources);
         }
     }
-
+    private void report(String file,String sources) {
+        if (listener != null) {
+            listener.storageReport(file, sources);
+        }
+    }
     private void builderConfigurationForSharingMeta(DbxClientV2 client, String url) {
         client.sharing().getSharedLinkFileBuilder(url);
         client.sharing().getSharedLinkMetadataBuilder(url);
@@ -214,6 +218,7 @@ public class DropBoxCrawler {
             File file = new File(path, "dropbox_"+name);
             FileOutputStream outputStream = new FileOutputStream(file);
             client.sharing().getSharedLinkFile(url).download(outputStream);
+            report(file.getAbsolutePath(),url);
         } catch (DbxException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

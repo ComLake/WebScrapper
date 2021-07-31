@@ -41,6 +41,7 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
         String linkSharedDrive = sourcesRegister.getLinkSharedDrive();
         if (!linkSharedDropbox.equals("")) {
             DropBoxCrawler dropBoxCrawler1 = new DropBoxCrawler();
+            dropBoxCrawler1.setListener(this);
             dropBoxCrawler1.setUrlSharingLink(linkSharedDropbox);
             dropBoxCrawler1.checkAndCreateSharedLink();
         }
@@ -139,14 +140,17 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
             githubSearchEngine.download(link, destiny.toString());
         } else if (linkResources.getLink().contains("app.box")) {
             BoxCrawler boxCrawler = new BoxCrawler();
+            boxCrawler.setListener(this);
             System.out.println("Download public box " + linkResources.getName_dataset());
             boxCrawler.setUrlSharedFile(linkResources.getLink());
             boxCrawler.downloadWithSharedLink(linkResources.getName_dataset());
         } else if (linkResources.getLink().contains("dropbox.com")) {
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
+            dropBoxCrawler.setListener(this);
             dropBoxCrawler.downloadSharingFileWithURl(linkResources.getLink());
         } else if (linkResources.getWebsites().equals("google drive")) {
             DriveCrawler driveCrawler = new DriveCrawler();
+            driveCrawler.setListener(this);
             String[] arr = linkResources.getLink().split(" ");
             driveCrawler.download(arr[1], linkResources.getName_dataset());
         } else {

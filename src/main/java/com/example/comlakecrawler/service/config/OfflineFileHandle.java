@@ -1,5 +1,10 @@
 package com.example.comlakecrawler.service.config;
 
+import com.github.junrar.Archive;
+import com.github.junrar.exception.RarException;
+import com.github.junrar.impl.FileVolumeManager;
+import com.github.junrar.rarfile.FileHeader;
+
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -13,7 +18,11 @@ public class OfflineFileHandle {
     public void onStop(){
         isExit = true;
     }
+    public String fileFormat(String name) {
+        return name.substring(name.lastIndexOf(".") + 1);
+    }
     public void unpacking(String targetZippedFile){
+        System.out.println("Begin unpacking....");
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -21,45 +30,73 @@ public class OfflineFileHandle {
                     try {
                         File targetFile = new File(targetZippedFile);
                         String source = targetFile.getAbsolutePath();
-                        String des = source.replace(".zip","");
+                        String fileFormat = fileFormat(targetZippedFile);
+                        System.out.println(fileFormat);
+                        if (!fileFormat.equals("zip")&&!fileFormat.equals("rar")){
+                            System.out.println("Cancel unzipping process");
+                            onStop();
+                            return;
+                        }
+                        String des = source.replace("."+fileFormat,"");
                         File file = new File(des);
                         if (!file.exists()){
                             file.mkdirs();
                         }
-                        byte []bytes = new byte[1024];
-                        FileInputStream fInputStream = new FileInputStream(targetFile);
-                        ZipInputStream zipInputStream = new ZipInputStream(fInputStream);
-                        ZipEntry entry ;
-                        while ((entry = zipInputStream.getNextEntry()) !=null){
-                            StringBuffer buffer = new StringBuffer();
-                            buffer.append(des);
-                            String finalPath = buffer.append(File.separator+entry.getName()).toString();
-                            File newBie = new File(finalPath);
-                            if (entry.isDirectory()){
-                                if (!newBie.isDirectory()&&!newBie.mkdirs()){
-                                    throw new IOException("Failed to create directory"+newBie);
+                        switch (fileFormat){
+                            case "zip":
+                                byte []bytes = new byte[1024];
+                                FileInputStream fInputStream = new FileInputStream(targetFile);
+                                ZipInputStream zipInputStream = new ZipInputStream(fInputStream);
+                                ZipEntry entry ;
+                                while ((entry = zipInputStream.getNextEntry()) !=null){
+                                    StringBuffer buffer = new StringBuffer();
+                                    buffer.append(des);
+                                    String finalPath = buffer.append(File.separator+entry.getName()).toString();
+                                    File newBie = new File(finalPath);
+                                    if (entry.isDirectory()){
+                                        if (!newBie.isDirectory()&&!newBie.mkdirs()){
+                                            throw new IOException("Failed to create directory"+newBie);
+                                        }
+                                    }else {
+                                        File parent = newBie.getParentFile();
+                                        if (!parent.isDirectory()&&!parent.mkdirs()){
+                                            throw new IOException("Failed to create directory"+parent);
+                                        }
+                                        FileOutputStream fOS = new FileOutputStream(newBie);
+                                        int length;
+                                        while ((length = zipInputStream.read(bytes))!=-1){
+                                            fOS.write(bytes,0,length);
+                                        }
+                                        fOS.close();
+                                    }
                                 }
-                            }else {
-                                File parent = newBie.getParentFile();
-                                if (!parent.isDirectory()&&!parent.mkdirs()){
-                                    throw new IOException("Failed to create directory"+parent);
+                                zipInputStream.closeEntry();
+                                zipInputStream.close();
+                                System.out.println("Successfully unzipped");
+                                break;
+                            case "rar":
+                                Archive archive = new Archive(new FileVolumeManager(targetFile));
+                                if (archive!=null){
+                                    archive.getMainHeader().print();
+                                    FileHeader fileHeader = archive.nextFileHeader();
+                                    while (fileHeader!=null){
+                                        File out = new File(des
+                                                + fileHeader.getFileNameString().trim());
+                                        FileOutputStream fOS = new FileOutputStream(out);
+                                        archive.extractFile(fileHeader,fOS);
+                                        fOS.close();
+                                        fileHeader = archive.nextFileHeader();
+                                    }
                                 }
-                                FileOutputStream fOS = new FileOutputStream(newBie);
-                                int length;
-                                while ((length = zipInputStream.read(bytes))!=-1){
-                                    fOS.write(bytes,0,length);
-                                }
-                                fOS.close();
-                            }
+                                break;
                         }
-                        zipInputStream.closeEntry();
-                        zipInputStream.close();
-                        System.out.println("Successfully unzipped");
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }finally {
+                    } catch (RarException e) {
+                        e.printStackTrace();
+                    } finally {
                         onStop();
                     }
                 }

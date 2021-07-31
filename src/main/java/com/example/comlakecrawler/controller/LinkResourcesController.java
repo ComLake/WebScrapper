@@ -86,6 +86,12 @@ public class LinkResourcesController {
         sourcesService.downloadSources(id);
         return "redirect:/result";
     }
+    @GetMapping("/directToComLake/{id}")
+    public String showSourcesForTransfer(@PathVariable(value = "id") long id) {
+        sourcesService.getLinksById(id);
+        sourcesService.downloadSources(id);
+        return "redirect:/result";
+    }
     @GetMapping("/results")
     public String sortAllWithSearch(Model model, @Param("keyword") String keyword) {
         int currentPage = 1;
