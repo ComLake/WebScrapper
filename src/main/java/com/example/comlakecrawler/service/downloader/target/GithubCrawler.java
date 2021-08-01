@@ -18,7 +18,7 @@ public class GithubCrawler extends Crawler {
     }
 
     @Override
-    public void download(String link, String path) {
+    public void download(String link, String path,String token) {
         onStart();
         Runnable runnable = new Runnable() {
             @Override
@@ -53,7 +53,7 @@ public class GithubCrawler extends Crawler {
                             outputStream.close();
                             inputStream.close();
                             if (listener != null) {
-                                listener.storageReport(path, link);
+                                listener.storageReport(path, link, token);
                             }
                             System.out.println("Downloaded!");
                         } else {

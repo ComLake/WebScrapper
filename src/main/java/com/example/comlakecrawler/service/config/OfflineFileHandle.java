@@ -1,5 +1,6 @@
 package com.example.comlakecrawler.service.config;
 
+import com.example.comlakecrawler.service.uploader.UploadCenter;
 import com.github.junrar.Archive;
 import com.github.junrar.exception.RarException;
 import com.github.junrar.impl.FileVolumeManager;
@@ -21,7 +22,7 @@ public class OfflineFileHandle {
     public String fileFormat(String name) {
         return name.substring(name.lastIndexOf(".") + 1);
     }
-    public void unpacking(String targetZippedFile){
+    public void unpacking(String targetZippedFile, String token, String link){
         System.out.println("Begin unpacking....");
         Runnable runnable = new Runnable() {
             @Override
@@ -34,6 +35,7 @@ public class OfflineFileHandle {
                         System.out.println(fileFormat);
                         if (!fileFormat.equals("zip")&&!fileFormat.equals("rar")){
                             System.out.println("Cancel unzipping process");
+                            new UploadCenter().uploadTryOut(targetFile,token,link);
                             onStop();
                             return;
                         }
@@ -69,6 +71,7 @@ public class OfflineFileHandle {
                                         }
                                         fOS.close();
                                     }
+                                    new UploadCenter().uploadTryOut(newBie,token,link);
                                 }
                                 zipInputStream.closeEntry();
                                 zipInputStream.close();
@@ -85,6 +88,7 @@ public class OfflineFileHandle {
                                         FileOutputStream fOS = new FileOutputStream(out);
                                         archive.extractFile(fileHeader,fOS);
                                         fOS.close();
+                                        new UploadCenter().uploadTryOut(out,token,link);
                                         fileHeader = archive.nextFileHeader();
                                     }
                                 }

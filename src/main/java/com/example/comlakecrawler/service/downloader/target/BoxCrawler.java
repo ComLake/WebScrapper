@@ -94,7 +94,7 @@ public class BoxCrawler {
         }
         return url;
     }
-    public void downloadWithSharedLink(String fileName) {
+    public void downloadWithSharedLink(String fileName,String token) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -146,7 +146,7 @@ public class BoxCrawler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }finally {
-                        report(path + "box_"+fileName,urlSharedFile);
+                        report(path + "box_"+fileName,urlSharedFile,token);
                         isExit = true;
                     }
                 }
@@ -223,9 +223,9 @@ public class BoxCrawler {
         boxSearchParam.setOwnerUserIds(ownerUserIds);
         crawlerSearchResult(boxSearchParam, boxSearch);
     }
-    private void report(String file,String sources) {
+    private void report(String file,String sources,String token) {
         if (listener != null) {
-            listener.storageReport(file, sources);
+            listener.storageReport(file, sources,token);
         }
     }
     private void saveLink() {

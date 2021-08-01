@@ -18,6 +18,9 @@
         margin: 0;
         box-sizing: border-box;
         position: relative;
+        background-image: url(images/background.jpg);
+        background-position: center;
+        background-size: cover;
         }
         .container{
       width: 80%;
@@ -132,21 +135,6 @@
         padding: 8px;
         text-align: center;
         border: 2px solid #dee2e685;
-        }
-        .table tbody tr td .upload{
-        width: 100px;
-        text-decoration: none;
-        line-height: 35px;
-        display: inline-block;
-        background-color: #FF1046;
-        font-weight: medium;
-        color: #FFFFFF;
-        text-align: center;
-        vertical-align: middle;
-        user-select: none;
-        border: 1px solid transparent;
-        font-size: 14px;
-        opacity: 1;
         }
         .table tbody tr td .download{
         width: 100px;
@@ -361,7 +349,7 @@
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/search}">Crawler Center</a></li>
                 <li class="current"><a th:href="@{/result}">Upload Via Comlake API</a></li>
-                <li><a href="">About</a></li>
+                <li><a href="">Logs</a></li>
             </ul>
         </nav>
         <div class="logout">
@@ -382,7 +370,6 @@
                     <th>Website</th>
                     <th>Author</th>
                     <th>Dataset</th>
-                    <th>Upload Links</th>
                     <th>Download Links</th>
                 </tr>
                 </thead>
@@ -392,12 +379,6 @@
                     <td th:text="${sources.websites}"></td>
                     <td th:text="${sources.author}"></td>
                     <td th:text="${sources.name_dataset}"></td>
-                    <td data-label="upload links">
-                        <div id="link_upload">
-                            <a th:href="@{/showSourcesForUpdate/{id}(id=${sources.id})}"
-                               class="upload" id="upload">Upload</a>
-                        </div>
-                    </td>
                     <td data-label="download links">
                         <div id="link_download">
                             <a th:href="@{/showSourcesForUpdate/{id}(id=${sources.id})}"
@@ -463,7 +444,9 @@
                 <div class="prof" th:text="${user.email}">(Số 8)</div>
                 <div class="divider" th:text="${user.roles}"></div>
                 <div class="bio" >
-                    <span th:text="${user.roles}"></span>
+                     <span>The club isn't the best place to find a lover
+So the bar is where I go. (Ed Sheeran-Shape of You)
+                    </span>
                 </div>
                 <button class="btn-logout" th:onclick="|window.location.href='/login'|" >Log out</button>
                 <button class="btn-cancel">Cancel</button>

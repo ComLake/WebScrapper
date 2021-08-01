@@ -1,9 +1,11 @@
 package com.example.comlakecrawler.service.uploader;
 
 import okhttp3.*;
+import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import javax.activation.MimetypesFileTypeMap;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -52,5 +54,78 @@ public class UploadCenter {
             }
         };
         runnable.run();
+    }
+    public void uploadTryOut(File fileSend, String token, String link){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (!isExit){
+                    String crlf = "\r\n";
+                    String twoHyphens = "--";
+                    String boundary = "*****";
+                    MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
+                    String mimeType = fileTypeMap.getContentType(fileSend.getName());
+                    /*-------------------Set up the request--------------------*/
+                    HttpURLConnection httpURLConnection = null;
+                    try {
+                        URL url = new URL(ULAKE_UPLOAD_FILE);
+                        httpURLConnection = (HttpURLConnection) url.openConnection();
+                        httpURLConnection.setUseCaches(false);
+                        httpURLConnection.setDoOutput(true);
+                        httpURLConnection.setRequestMethod("POST");
+                        httpURLConnection.setRequestProperty("Connection","Keep-Alive");
+                        httpURLConnection.setRequestProperty("Authorization", "Bearer " +
+                                token);
+                        httpURLConnection.setRequestProperty("Cache-Control","no-cache");
+                        httpURLConnection.setRequestProperty("Content-Type",
+                                "multipart/form-data;boundary="+boundary);
+                        /*-------------------Start content wrapper--------------------*/
+                        DataOutputStream request = new DataOutputStream(
+                                httpURLConnection.getOutputStream()
+                        );
+                        request.writeBytes(twoHyphens+boundary+crlf);
+                        request.writeBytes("Content-Disposition: form-data; name=\""+
+                                        "file"+
+                                "\";filename=\""+
+                                fileSend.getAbsolutePath()+ "\""+crlf);
+                        request.writeBytes("Content-Type: "+mimeType+crlf);
+                        request.writeBytes(crlf);
+                        /*-------------------Convert Bitmap to ByteBuffer--------------------*/
+                        byte[] fileBytes = FileUtils.readFileToByteArray(fileSend);
+                        request.write(fileBytes);
+                        /*-------------------End content wrapper--------------------*/
+                        request.writeBytes(crlf);
+                        request.writeBytes(twoHyphens+boundary+twoHyphens+crlf);
+                        /*-------------------Flush output buffer--------------------*/
+                        request.flush();
+                        request.close();
+                        /*-------------------Get response--------------------*/
+                        InputStream responseStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                        BufferedReader responseReader = new BufferedReader(new InputStreamReader(responseStream));
+                        String line="";
+                        StringBuilder stringBuilder = new StringBuilder();
+                        while ((line = responseReader.readLine())!=null){
+                            stringBuilder.append(line).append("\n");
+                        }
+                        responseReader.close();
+                        String response = stringBuilder.toString();
+                        System.out.println(response);
+                        /*-------------------Close response stream--------------------*/
+                        responseStream.close();
+                        httpURLConnection.disconnect();
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }finally {
+                        onStop();
+                    }
+                }
+            }
+        };
+        runnable.run();
+    }
+    public String fileFormat(String name) {
+        return name.substring(name.lastIndexOf(".") + 1);
     }
 }

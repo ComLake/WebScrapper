@@ -163,12 +163,12 @@ public class DriveCrawler {
         }while (pageToken != null);
         return list;
     }
-    public void download(String fileId, String fileName){
+    public void download(String fileId, String fileName,String token){
         try {
             java.io.File file = new java.io.File(path+"ggdrive_"+fileName);
             OutputStream outputStream = new FileOutputStream(file);
             service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
-            report(path+"ggdrive_"+fileName,urlEmbedded);
+            report(path+"ggdrive_"+fileName,urlEmbedded, token);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -200,9 +200,9 @@ public class DriveCrawler {
         }
         saveLink();
     }
-    private void report(String file,String sources) {
+    private void report(String file,String sources,String token) {
         if (listener != null) {
-            listener.storageReport(file, sources);
+            listener.storageReport(file, sources, token);
         }
     }
     public void setUrlEmbedded(String urlEmbedded) {

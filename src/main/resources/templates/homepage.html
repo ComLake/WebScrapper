@@ -257,7 +257,7 @@
                 <li class="current"><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/search}">Crawler Center</a> </li>
                 <li><a th:href="@{/result}">Upload Via Comlake API</a> </li>
-                <li><a href="">About</a> </li>
+                <li><a href="">Logs</a> </li>
             </ul>
         </nav>
         <div class="logout">
@@ -291,7 +291,9 @@
                 <div class="prof" th:text="${user.email}">(Số 8)</div>
                 <div class="divider" th:text="${user.roles}"></div>
                 <div class="bio" >
-                    <span th:text="${user.roles}"></span>
+                    <span>The club isn't the best place to find a lover
+So the bar is where I go. (Ed Sheeran-Shape of You)
+                    </span>
                 </div>
                 <button class="btn-logout" th:onclick="|window.location.href='/login'|" >Log out</button>
                 <button class="btn-cancel">Cancel</button>

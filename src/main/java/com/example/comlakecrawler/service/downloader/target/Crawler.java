@@ -34,7 +34,7 @@ public abstract class Crawler {
     public void setKeySeek(String keySeek) {
         this.keySeek = keySeek;
     }
-    public abstract void download(String link, String path);
+    public abstract void download(String link, String path,String token);
     public abstract void scrapper();
     protected void onStart(){
         this.isExit = false;

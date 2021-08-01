@@ -93,7 +93,7 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
     }
 
     @Override
-    public void downloadSources(long id) {
+    public void downloadSources(long id,String token) {
         LinkResources linkResources = getLinksById(id);
         String link = linkResources.getLink();
         if (link.contains("kaggle")) {
@@ -116,7 +116,7 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
             destiny.append(path);
             destiny.append(buffer);
             System.out.println("Downloading.. " + buffer + " to " + destiny);
-            kaggleSearchEngine.download(link, destiny.toString());
+            kaggleSearchEngine.download(link, destiny.toString(),token);
         } else if (linkResources.getLink().contains("github")) {
             GithubCrawler githubSearchEngine = new GithubCrawler();
             githubSearchEngine.setListener(this);
@@ -137,22 +137,22 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
             destiny.append(path);
             destiny.append(buffer);
             System.out.println("Downloading.. " + buffer + " to " + destiny);
-            githubSearchEngine.download(link, destiny.toString());
+            githubSearchEngine.download(link, destiny.toString(),token);
         } else if (linkResources.getLink().contains("app.box")) {
             BoxCrawler boxCrawler = new BoxCrawler();
             boxCrawler.setListener(this);
             System.out.println("Download public box " + linkResources.getName_dataset());
             boxCrawler.setUrlSharedFile(linkResources.getLink());
-            boxCrawler.downloadWithSharedLink(linkResources.getName_dataset());
+            boxCrawler.downloadWithSharedLink(linkResources.getName_dataset(),token);
         } else if (linkResources.getLink().contains("dropbox.com")) {
             DropBoxCrawler dropBoxCrawler = new DropBoxCrawler();
             dropBoxCrawler.setListener(this);
-            dropBoxCrawler.downloadSharingFileWithURl(linkResources.getLink());
+            dropBoxCrawler.downloadSharingFileWithURl(linkResources.getLink(),token);
         } else if (linkResources.getWebsites().equals("google drive")) {
             DriveCrawler driveCrawler = new DriveCrawler();
             driveCrawler.setListener(this);
             String[] arr = linkResources.getLink().split(" ");
-            driveCrawler.download(arr[1], linkResources.getName_dataset());
+            driveCrawler.download(arr[1], linkResources.getName_dataset(),token);
         } else {
             throw new RuntimeException("This website haven't been supported");
         }
@@ -166,8 +166,8 @@ public class SourcesServiceImpl implements SourcesService, CrawlerInterface {
     }
 
     @Override
-    public void storageReport(String file, String link) {
-        new OfflineFileHandle().unpacking(file);
+    public void storageReport(String file, String link, String token) {
+        new OfflineFileHandle().unpacking(file,token,link);
     }
 
     @Override

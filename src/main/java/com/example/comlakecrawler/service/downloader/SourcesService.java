@@ -11,6 +11,6 @@ public interface SourcesService {
     Page<LinkResources>getAllResources(int pageNumber);
     void addSomeSourcesLink(SourcesRegistration sourcesRegister);
     LinkResources getLinksById(long id);
-    void downloadSources(long id);
+    void downloadSources(long id, String token);
     Page<LinkResources> findByName(String name,int pageNumber);
 }

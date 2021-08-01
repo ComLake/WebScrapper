@@ -82,14 +82,15 @@ public class LinkResourcesController {
 
     @GetMapping("/showSourcesForUpdate/{id}")
     public String showSourcesForUpdate(@PathVariable(value = "id") long id) {
+        String token="";
+        if (userServices.getCurrentUser()!=null) {
+            UserAccount userAccount = userServices.getCurrentUser();
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append(token).append(userAccount.getToken());
+            token = stringBuffer.toString();
+        }
         sourcesService.getLinksById(id);
-        sourcesService.downloadSources(id);
-        return "redirect:/result";
-    }
-    @GetMapping("/directToComLake/{id}")
-    public String showSourcesForTransfer(@PathVariable(value = "id") long id) {
-        sourcesService.getLinksById(id);
-        sourcesService.downloadSources(id);
+        sourcesService.downloadSources(id,token);
         return "redirect:/result";
     }
     @GetMapping("/results")
